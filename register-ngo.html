@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Registration - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .registration-header {
+            background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+            color: var(--text-primary);
+            padding: 40px 0;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #dee2e6;
+            z-index: 1;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dee2e6;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+        .step.active .step-number {
+            background: var(--accent-secondary);
+            color: var(--text-primary);
+        }
+        .step.completed .step-number {
+            background: var(--accent-primary);
+            color: var(--text-primary);
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .document-upload {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .document-upload:hover {
+            border-color: var(--accent-secondary);
+            background: var(--card-bg);
+        }
+        .registration-benefits {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--hover-bg) 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-secondary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .ngo-type-card {
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        .ngo-type-card:hover, .ngo-type-card.selected {
+            border-color: var(--accent-secondary);
+            background: #f0f9f4;
+        }
+        .ngo-type-card.selected {
+            border-width: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Registration Header -->
+    <div class="registration-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold">NGO & Organization Registration</h1>
+                    <p class="lead mb-0">Join India's Premier Blue Carbon Credit Platform as an Implementation Partner</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-dark text-dark rounded p-3">
+                        <small class="text-secondary">Already registered?</small><br>
+                        <a href="login.html" class="btn btn-success btn-sm">Login Here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Benefits -->
+    <div class="container">
+        <div class="registration-benefits">
+            <h4 class="mb-4"><i class="fas fa-hands-helping me-2 text-success"></i>Benefits for NGO Partners</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Project Funding</h6>
+                            <p class="mb-0 small">Access carbon credit revenue for environmental projects</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Impact Measurement</h6>
+                            <p class="mb-0 small">Quantifiable impact tracking through carbon credits</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Community Engagement</h6>
+                            <p class="mb-0 small">Strengthen community partnerships through restoration</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Credibility Enhancement</h6>
+                            <p class="mb-0 small">Verified projects build donor confidence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="container">
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Organization Details</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Registration & Legal</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Project Experience</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Bank & Final</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container mb-5">
+        <form id="ngoRegistrationForm">
+            <!-- Step 1: Organization Details -->
+            <div class="form-section active" id="step1">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-hands-helping me-2"></i>Step 1: Organization Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Organization Type *</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="ngo-type-card" onclick="selectNgoType('trust')" id="trust-card">
+                                        <i class="fas fa-hands fa-2x text-success mb-3"></i>
+                                        <h6>Trust</h6>
+                                        <small class="text-secondary">Public/Private Trust</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="ngo-type-card" onclick="selectNgoType('society')" id="society-card">
+                                        <i class="fas fa-users fa-2x text-info mb-3"></i>
+                                        <h6>Society</h6>
+                                        <small class="text-secondary">Registered Society</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="ngo-type-card" onclick="selectNgoType('section8')" id="section8-card">
+                                        <i class="fas fa-building fa-2x text-warning mb-3"></i>
+                                        <h6>Section 8 Company</h6>
+                                        <small class="text-secondary">Non-profit Company</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="ngoType" id="ngoType" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Organization Name *</label>
+                                    <input type="text" class="form-control" name="orgName" required 
+                                           placeholder="Legal registered name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Year of Establishment *</label>
+                                    <input type="number" class="form-control" name="establishmentYear" 
+                                           min="1900" max="2024" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mission Statement *</label>
+                            <textarea class="form-control" name="missionStatement" rows="3" required 
+                                      placeholder="Brief description of your organization's mission..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Primary Focus Area *</label>
+                                    <select class="form-select" name="focusArea" required>
+                                        <option value="">Select Focus Area</option>
+                                        <option value="environment">Environment Conservation</option>
+                                        <option value="climate">Climate Change</option>
+                                        <option value="biodiversity">Biodiversity</option>
+                                        <option value="community">Community Development</option>
+                                        <option value="research">Research & Education</option>
+                                        <option value="multiple">Multiple Areas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Team Size *</label>
+                                    <select class="form-select" name="teamSize" required>
+                                        <option value="">Select Range</option>
+                                        <option value="1-5">1-5</option>
+                                        <option value="6-10">6-10</option>
+                                        <option value="11-20">11-20</option>
+                                        <option value="21-50">21-50</option>
+                                        <option value="51-100">51-100</option>
+                                        <option value="100+">100+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <button type="button" class="btn btn-success" onclick="nextStep(2)">
+                                Next: Registration & Legal <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Registration & Legal -->
+            <div class="form-section" id="step2">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-file-contract me-2"></i>Step 2: Registration & Legal Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Registration Details</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Registration Number *</label>
+                                    <input type="text" class="form-control" name="registrationNumber" required 
+                                           placeholder="Registration number with authority">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Registration Date *</label>
+                                    <input type="date" class="form-control" name="registrationDate" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Registration Authority *</label>
+                                    <input type="text" class="form-control" name="registrationAuthority" required 
+                                           placeholder="e.g., Charity Commissioner, Registrar of Societies">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">12A/12AA Certificate Number</label>
+                                    <input type="text" class="form-control" name="certificate12A" 
+                                           placeholder="If applicable">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">80G Certificate Number</label>
+                                    <input type="text" class="form-control" name="certificate80G" 
+                                           placeholder="If applicable">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">FCRA Registration Number</label>
+                                    <input type="text" class="form-control" name="fcraNumber" 
+                                           placeholder="If applicable">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Registered Office Address *</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredAddress" required 
+                                               placeholder="Full address as per registration">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredCity" required 
+                                               placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <select class="form-select" name="registeredState" required>
+                                            <option value="">Select State</option>
+                                            <option value="maharashtra">Maharashtra</option>
+                                            <option value="delhi">Delhi</option>
+                                            <option value="karnataka">Karnataka</option>
+                                            <option value="tamil_nadu">Tamil Nadu</option>
+                                            <option value="west_bengal">West Bengal</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredPincode" required 
+                                               pattern="[0-9]{6}" placeholder="PIN Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Document Upload</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('registrationCertificate').click()">
+                                    <i class="fas fa-file-contract fa-2x text-secondary mb-3"></i>
+                                    <p>Registration Certificate</p>
+                                    <small class="text-secondary">Max 2MB, PDF</small>
+                                    <input type="file" id="registrationCertificate" accept=".pdf" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('trustDeed').click()">
+                                    <i class="fas fa-scroll fa-2x text-secondary mb-3"></i>
+                                    <p>Trust Deed/Memorandum</p>
+                                    <small class="text-secondary">Max 2MB, PDF</small>
+                                    <input type="file" id="trustDeed" accept=".pdf" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('taxCertificates').click()">
+                                    <i class="fas fa-receipt fa-2x text-secondary mb-3"></i>
+                                    <p>Tax Exemption Certificates</p>
+                                    <small class="text-secondary">Max 2MB, PDF</small>
+                                    <input type="file" id="taxCertificates" accept=".pdf" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="nextStep(3)">
+                                Next: Project Experience <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Project Experience -->
+            <div class="form-section" id="step3">
+                <div class="card">
+                    <div class="card-header bg-warning text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-project-diagram me-2"></i>Step 3: Project Experience & Capacity
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Past Project Experience</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Years of Experience in Environmental Projects *</label>
+                            <select class="form-select" name="experienceYears" required>
+                                <option value="">Select Years</option>
+                                <option value="0-2">0-2 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="6-10">6-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Previous Carbon/Environmental Projects</label>
+                            <textarea class="form-control" name="previousProjects" rows="3" 
+                                      placeholder="Describe any previous environmental restoration or carbon projects..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Key Achievements</label>
+                            <textarea class="form-control" name="keyAchievements" rows="3" 
+                                      placeholder="Notable achievements in environmental conservation..."></textarea>
+                        </div>
+
+                        <h5 class="mb-4">Technical Capacity</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Available Technical Staff</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="technicalStaff" 
+                                           min="0" placeholder="Number of staff">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Available Field Equipment</label>
+                            <textarea class="form-control" name="fieldEquipment" rows="2" 
+                                      placeholder="List available field equipment..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Partnerships with Communities</label>
+                            <textarea class="form-control" name="communityPartnerships" rows="2" 
+                                      placeholder="Describe existing community partnerships..."></textarea>
+                        </div>
+
+                        <h5 class="mb-4">Project Preferences</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Project Types *</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="projectTypes" value="mangrove" id="mangrove">
+                                        <label class="form-check-label" for="mangrove">
+                                            Mangrove Restoration
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="projectTypes" value="afforestation" id="afforestation">
+                                        <label class="form-check-label" for="afforestation">
+                                            Coastal Afforestation
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="projectTypes" value="seagrass" id="seagrass">
+                                        <label class="form-check-label" for="seagrass">
+                                            Seagrass Rehabilitation
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="projectTypes" value="wetland" id="wetland">
+                                        <label class="form-check-label" for="wetland">
+                                            Wetland Conservation
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Geographic Areas of Operation *</label>
+                            <textarea class="form-control" name="operationAreas" rows="2" required 
+                                      placeholder="States/districts where you operate..."></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="nextStep(4)">
+                                Next: Bank & Final <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Bank & Final -->
+            <div class="form-section" id="step4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-university me-2"></i>Step 4: Bank Details & Finalization
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Bank Account Details</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Bank Name *</label>
+                                    <input type="text" class="form-control" name="bankName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Branch Name *</label>
+                                    <input type="text" class="form-control" name="branchName" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Number *</label>
+                                    <input type="text" class="form-control" name="accountNumber" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm Account Number *</label>
+                                    <input type="text" class="form-control" name="confirmAccountNumber" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">IFSC Code *</label>
+                                    <input type="text" class="form-control" name="ifscCode" 
+                                           pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required 
+                                           placeholder="e.g., SBIN0000123">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Type *</label>
+                                    <select class="form-select" name="accountType" required>
+                                        <option value="">Select Account Type</option>
+                                        <option value="current">Current Account</option>
+                                        <option value="savings">Savings Account</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Upload Cancelled Cheque *</label>
+                            <div class="document-upload" onclick="document.getElementById('cancelledCheque').click()">
+                                <i class="fas fa-file-invoice-dollar fa-2x text-secondary mb-3"></i>
+                                <p>Click to upload Cancelled Cheque</p>
+                                <small class="text-secondary">Max 2MB, PDF/Image</small>
+                                <input type="file" id="cancelledCheque" accept=".pdf,image/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Contact Person Details</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Person Name *</label>
+                                    <input type="text" class="form-control" name="contactName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Designation *</label>
+                                    <input type="text" class="form-control" name="contactDesignation" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" name="contactEmail" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Mobile Number *</label>
+                                    <input type="tel" class="form-control" name="contactMobile" 
+                                           pattern="[0-9]{10}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Terms & Declaration</h5>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I have read and agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="declareInfo" required>
+                                <label class="form-check-label" for="declareInfo">
+                                    I declare that all information provided is true and correct *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="authorizedSignatory" required>
+                                <label class="form-check-label" for="authorizedSignatory">
+                                    I am an authorized signatory of the organization *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check-circle me-2"></i>Complete Registration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Registration Progress -->
+        <div class="card mt-4">
+            <div class="card-body text-center">
+                <h6>Registration Progress</h6>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar bg-success" id="progressBar" style="width: 25%"></div>
+                </div>
+                <small class="text-secondary" id="progressText">Step 1 of 4 - Organization Details</small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            const stepTexts = [
+                'Step 1 of 4 - Organization Details',
+                'Step 2 of 4 - Registration & Legal',
+                'Step 3 of 4 - Project Experience',
+                'Step 4 of 4 - Bank & Final'
+            ];
+            document.getElementById('progressText').textContent = stepTexts[currentStep - 1];
+        }
+
+        function nextStep(step) {
+            if (validateStep(currentStep)) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                
+                currentStep = step;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                
+                // Mark previous steps as completed
+                for (let i = 1; i < currentStep; i++) {
+                    document.querySelector(`.step[data-step="${i}"]`).classList.add('completed');
+                }
+                
+                updateProgress();
+            }
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            
+            updateProgress();
+        }
+
+        function validateStep(step) {
+            const form = document.getElementById('ngoRegistrationForm');
+            const inputs = form.querySelectorAll(`#step${step} [required]`);
+            
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    input.focus();
+                    alert(`Please fill in ${input.labels[0].textContent}`);
+                    return false;
+                }
+            }
+            
+            if (step === 1 && !document.getElementById('ngoType').value) {
+                alert('Please select an organization type');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function selectNgoType(type) {
+            document.getElementById('ngoType').value = type;
+            
+            // Remove selected class from all cards
+            document.querySelectorAll('.ngo-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            document.getElementById(`${type}-card`).classList.add('selected');
+        }
+
+        // Form submission
+        document.getElementById('ngoRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateStep(4)) {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                submitBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    alert('Registration submitted successfully! Your account will be activated within 24-48 hours after verification.');
+                    localStorage.setItem('ngoRegistered', 'true');
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

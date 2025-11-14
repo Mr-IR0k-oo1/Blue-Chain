@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>
+                BlueCarbon India
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace.html">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="faq.html">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQ Header -->
+    <div class="faq-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Frequently Asked Questions</h1>
+            <p class="lead mb-0">Find answers to common questions about BlueCarbon India platform</p>
+        </div>
+    </div>
+
+    <!-- Search Box -->
+    <div class="container mt-5">
+        <div class="search-box">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" placeholder="Search for questions..." id="faqSearch">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Category Navigation -->
+            <div class="col-md-3">
+                <div class="category-nav">
+                    <h5 class="mb-4">Categories</h5>
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#registration">
+                            <i class="fas fa-user-plus me-2"></i>Registration
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#projects">
+                            <i class="fas fa-project-diagram me-2"></i>Projects
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#credits">
+                            <i class="fas fa-seedling me-2"></i>Carbon Credits
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#payments">
+                            <i class="fas fa-rupee-sign me-2"></i>Payments
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#technical">
+                            <i class="fas fa-cogs me-2"></i>Technical
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#verification">
+                            <i class="fas fa-shield-alt me-2"></i>Verification
+                        </button>
+                    </div>
+
+                    <!-- Quick Help -->
+                    <div class="card mt-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+                            <h6>Need More Help?</h6>
+                            <p class="small text-secondary">Can't find your answer? Contact our support team</p>
+                            <a href="contact.html" class="btn btn-outline-primary btn-sm">Contact Support</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Content -->
+            <div class="col-md-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- Registration FAQs -->
+                    <div class="tab-pane fade show active" id="registration">
+                        <h3 class="mb-4"><i class="fas fa-user-plus me-2 text-primary"></i>Registration & Onboarding</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                What documents are required for farmer registration?
+                            </div>
+                            <div class="faq-answer">
+                                <p>For farmer registration, you need:</p>
+                                <ul>
+                                    <li>Valid Kisan Card (12-digit number)</li>
+                                    <li>Aadhaar Card for identity verification</li>
+                                    <li>Land ownership documents (7/12 extract or equivalent)</li>
+                                    <li>Bank account details for payments</li>
+                                    <li>Recent passport-size photograph</li>
+                                </ul>
+                                <p>All documents are verified through government databases for authenticity.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                How long does registration approval take?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Registration approval timelines vary by user type:</p>
+                                <ul>
+                                    <li><strong>Farmers/Coastal Communities:</strong> 24-48 hours</li>
+                                    <li><strong>Corporate Entities:</strong> 2-3 business days</li>
+                                    <li><strong>NGOs/Organizations:</strong> 3-5 business days</li>
+                                </ul>
+                                <p>You'll receive email notifications at each stage of the approval process.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                Can I register multiple land parcels under one account?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes, you can register multiple land parcels under a single account. After initial registration, you can add additional land parcels through your dashboard by providing:</p>
+                                <ul>
+                                    <li>Land survey numbers and location details</li>
+                                    <li>Ownership documents for each parcel</li>
+                                    <li>Geotagged photos of the land</li>
+                                </ul>
+                                <p>Each land parcel will be treated as a separate project for carbon credit calculation.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                What if I don't have a Kisan Card?
+                            </div>
+                            <div class="faq-answer">
+                                <p>If you don't have a Kisan Card, you can still register using alternative documents:</p>
+                                <ul>
+                                    <li>Aadhaar Card for identity verification</li>
+                                    <li>Land ownership records (7/12 extract, RoR)</li>
+                                    <li>Bank account details</li>
+                                    <li>Panchayat verification certificate</li>
+                                </ul>
+                                <p>Our support team will guide you through the alternative registration process.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects FAQs -->
+                    <div class="tab-pane fade" id="projects">
+                        <h3 class="mb-4"><i class="fas fa-project-diagram me-2 text-success"></i>Project Management</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                What types of projects are eligible for carbon credits?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Eligible projects include:</p>
+                                <ul>
+                                    <li><strong>Mangrove Restoration:</strong> Planting and maintaining mangrove ecosystems</li>
+                                    <li><strong>Coastal Afforestation:</strong> Tree planting in coastal areas</li>
+                                    <li><strong>Seagrass Rehabilitation:</strong> Restoring seagrass meadows</li>
+                                    <li><strong>Wetland Conservation:</strong> Protecting and enhancing wetlands</li>
+                                    <li><strong>Salt Marsh Restoration:</strong> Rebuilding salt marsh ecosystems</li>
+                                </ul>
+                                <p>All projects must demonstrate additionality and follow approved methodologies.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                How often do I need to upload project data?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Data upload frequency depends on your project phase:</p>
+                                <ul>
+                                    <li><strong>Monthly:</strong> Progress photos and basic updates</li>
+                                    <li><strong>Quarterly:</strong> Detailed progress reports</li>
+                                    <li><strong>Annually:</strong> Comprehensive monitoring data</li>
+                                    <li><strong>As needed:</strong> Significant changes or events</li>
+                                </ul>
+                                <p>The platform will send you reminders for upcoming data upload deadlines.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                What happens if my project fails or plants die?
+                            </div>
+                            <div class="faq-answer">
+                                <p>We understand that restoration projects can face challenges:</p>
+                                <ul>
+                                    <li><strong>Replacement Planting:</strong> You can replant failed areas</li>
+                                    <li><strong>Insurance Buffer:</strong> We maintain a 20% buffer for project risks</li>
+                                    <li><strong>Technical Support:</strong> Our agronomists can provide guidance</li>
+                                    <li><strong>Force Majeure:</strong> Natural disasters are accounted for in risk assessment</li>
+                                </ul>
+                                <p>Transparent reporting of challenges helps us work together on solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carbon Credits FAQs -->
+                    <div class="tab-pane fade" id="credits">
+                        <h3 class="mb-4"><i class="fas fa-seedling me-2 text-success"></i>Carbon Credits</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                How are carbon credits calculated?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Carbon credits are calculated using scientific methods:</p>
+                                <ul>
+                                    <li><strong>IPCC Methodologies:</strong> Following international standards</li>
+                                    <li><strong>Satellite Monitoring:</strong> Regular remote sensing of biomass</li>
+                                    <li><strong>Field Measurements:</strong> Ground truthing and sampling</li>
+                                    <li><strong>Species-specific Factors:</strong> Different plants sequester different amounts</li>
+                                    <li><strong>Soil Carbon Analysis:</strong> Measuring below-ground carbon</li>
+                                </ul>
+                                <p>1 carbon credit = 1 tonne of CO2 equivalent sequestered.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                When will I receive my first carbon credits?
+                            </div>
+                            <div class="faq-answer">
+                                <p>The timeline for receiving carbon credits depends on:</p>
+                                <ul>
+                                    <li><strong>Project Establishment:</strong> 3-6 months for initial verification</li>
+                                    <li><strong>First Verification:</strong> 12 months for first credit issuance</li>
+                                    <li><strong>Ongoing Credits:</strong> Quarterly after first verification</li>
+                                </ul>
+                                <p>You can track your credit accumulation in real-time through your dashboard.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                Can I sell my carbon credits to anyone?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes, within the BlueCarbon India marketplace:</p>
+                                <ul>
+                                    <li><strong>Open Marketplace:</strong> Sell to any registered corporate buyer</li>
+                                    <li><strong>Direct Offers:</strong> Receive purchase offers from companies</li>
+                                    <li><strong>Auction:</strong> Set minimum price and allow bidding</li>
+                                    <li><strong>Forward Contracts:</strong> Pre-sell future credit generations</li>
+                                </ul>
+                                <p>All transactions are secure and transparent through blockchain technology.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payments FAQs -->
+                    <div class="tab-pane fade" id="payments">
+                        <h3 class="mb-4"><i class="fas fa-rupee-sign me-2 text-warning"></i>Payments & Transactions</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                How and when will I receive payments?
+                            </div>
+                            <div class="faq-answer">
+                                <p>Payment process details:</p>
+                                <ul>
+                                    <li><strong>Payment Method:</strong> Direct bank transfer to your registered account</li>
+                                    <li><strong>Processing Time:</strong> 7 business days after credit sale</li>
+                                    <li><strong>Transaction Fee:</strong> 5% platform fee deducted from sale amount</li>
+                                    <li><strong>Payment Tracking:</strong> Real-time status in your dashboard</li>
+                                </ul>
+                                <p>You'll receive SMS and email notifications for all payment transactions.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                Are there any hidden charges or fees?
+                            </div>
+                            <div class="faq-answer">
+                                <p>We maintain complete transparency in all charges:</p>
+                                <ul>
+                                    <li><strong>Platform Fee:</strong> 5% on credit sales (clearly displayed)</li>
+                                    <li><strong>Verification Cost:</strong> Actual third-party verification charges</li>
+                                    <li><strong>No Hidden Fees:</strong> No registration, maintenance, or withdrawal fees</li>
+                                    <li><strong>GST:</strong> Applicable GST as per government regulations</li>
+                                </ul>
+                                <p>All charges are displayed before you confirm any transaction.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <i class="fas fa-chevron-down me-2"></i>
+                                What if there's an issue with my payment?
+                            </div>
+                            <div class="faq-answer">
+                                <p>If you encounter payment issues:</p>
+                                <ul>
+                                    <li><strong>Check Bank Details:</strong> Ensure your registered bank account is active</li>
+                                    <li><strong>Contact Support:</strong> Reach out to our payment support team</li>
+                                    <li><strong>Dispute Resolution:</strong> File a payment dispute through your dashboard</li>
+                                    <li><strong>Escalation:</strong> Escalate to our grievance officer if unresolved</li>
+                                </ul>
+                                <p>Most payment issues are resolved within 48 hours.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more FAQ categories as needed -->
+                </div>
+
+                <!-- Contact Promo -->
+                <div class="contact-promo text-center">
+                    <h3 class="mb-3">Still Have Questions?</h3>
+                    <p class="mb-4">Our support team is here to help you with any questions about the BlueCarbon India platform.</p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="contact.html" class="btn btn-light btn-lg">
+                            <i class="fas fa-headset me-2"></i>Contact Support
+                        </a>
+                        <a href="tel:18001234567" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-phone me-2"></i>Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (answer.classList.contains('show')) {
+                answer.classList.remove('show');
+                icon.className = 'fas fa-chevron-down me-2';
+            } else {
+                answer.classList.add('show');
+                icon.className = 'fas fa-chevron-up me-2';
+            }
+        }
+
+        // Search functionality
+        document.getElementById('faqSearch').addEventListener('input', function(e) {
+            const searchTerm = this.value.toLowerCase();
+            const questions = document.querySelectorAll('.faq-question');
+            
+            questions.forEach(question => {
+                const questionText = question.textContent.toLowerCase();
+                const faqItem = question.closest('.faq-item');
+                
+                if (questionText.includes(searchTerm)) {
+                    faqItem.style.display = 'block';
+                    // Auto-expand matching questions
+                    const answer = question.nextElementSibling;
+                    if (!answer.classList.contains('show')) {
+                        answer.classList.add('show');
+                        question.querySelector('i').className = 'fas fa-chevron-up me-2';
+                    }
+                } else {
+                    faqItem.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize all FAQs to be collapsed
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.classList.remove('show');
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>
+                BlueCarbon India
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace.html">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="resources.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Resources Header -->
+    <div class="resources-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Learning Resources</h1>
+            <p class="lead mb-0">Comprehensive guides, tools, and materials for your carbon credit journey</p>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="container mt-5">
+        <div class="category-filter">
+            <h4 class="text-center mb-4"><i class="fas fa-filter me-2 text-primary"></i>Filter Resources</h4>
+            <div class="text-center">
+                <button class="btn btn-outline-primary filter-btn active" data-filter="all">All Resources</button>
+                <button class="btn btn-outline-success filter-btn" data-filter="guides">Guides & Manuals</button>
+                <button class="btn btn-outline-info filter-btn" data-filter="videos">Video Tutorials</button>
+                <button class="btn btn-outline-warning filter-btn" data-filter="tools">Tools & Calculators</button>
+                <button class="btn btn-outline-danger filter-btn" data-filter="research">Research Papers</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="templates">Templates</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="container py-5">
+        <div class="row" id="resourcesGrid">
+            <!-- Guide 1 -->
+            <div class="col-md-4 resource-item" data-category="guides">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="resource-icon bg-primary text-white">
+                            <i class="fas fa-book-open fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Farmer Registration Guide</h5>
+                        <p class="card-text text-secondary">Step-by-step guide for coastal communities to register on the platform</p>
+                        <div class="mb-3">
+                            <span class="badge bg-primary resource-tag">PDF</span>
+                            <span class="badge bg-success resource-tag">Beginner</span>
+                            <span class="badge bg-info resource-tag">15 pages</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Updated: Jun 2024</small>
+                            <button class="btn btn-outline-primary btn-sm" onclick="downloadResource('farmer-guide')">
+                                <i class="fas fa-download me-1"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 1 -->
+            <div class="col-md-4 resource-item" data-category="videos">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="video-thumbnail bg-dark" style="height: 120px;">
+                            <div class="play-button" onclick="playVideo('platform-overview')">
+                                <i class="fas fa-play text-primary fa-2x"></i>
+                            </div>
+                        </div>
+                        <h5 class="card-title">Platform Overview Tutorial</h5>
+                        <p class="card-text text-secondary">Complete walkthrough of BlueCarbon India platform features</p>
+                        <div class="mb-3">
+                            <span class="badge bg-danger resource-tag">Video</span>
+                            <span class="badge bg-success resource-tag">Beginner</span>
+                            <span class="badge bg-info resource-tag">12:30 mins</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Posted: May 2024</small>
+                            <button class="btn btn-outline-danger btn-sm" onclick="playVideo('platform-overview')">
+                                <i class="fas fa-play me-1"></i>Watch
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 1 -->
+            <div class="col-md-4 resource-item" data-category="tools">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="resource-icon bg-warning text-white">
+                            <i class="fas fa-calculator fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Carbon Credit Calculator</h5>
+                        <p class="card-text text-secondary">Interactive tool to estimate potential carbon credits from your land</p>
+                        <div class="mb-3">
+                            <span class="badge bg-warning resource-tag">Tool</span>
+                            <span class="badge bg-success resource-tag">Interactive</span>
+                            <span class="badge bg-info resource-tag">Web App</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Version: 2.1</small>
+                            <button class="btn btn-outline-warning btn-sm" onclick="openCalculator()">
+                                <i class="fas fa-external-link-alt me-1"></i>Open Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research 1 -->
+            <div class="col-md-4 resource-item" data-category="research">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="resource-icon bg-info text-white">
+                            <i class="fas fa-file-alt fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Mangrove Carbon Sequestration Study</h5>
+                        <p class="card-text text-secondary">Research paper on carbon sequestration rates in Indian mangrove ecosystems</p>
+                        <div class="mb-3">
+                            <span class="badge bg-info resource-tag">Research</span>
+                            <span class="badge bg-warning resource-tag">Advanced</span>
+                            <span class="badge bg-secondary resource-tag">25 pages</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Published: Apr 2024</small>
+                            <button class="btn btn-outline-info btn-sm" onclick="downloadResource('mangrove-study')">
+                                <i class="fas fa-download me-1"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template 1 -->
+            <div class="col-md-4 resource-item" data-category="templates">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="resource-icon bg-success text-white">
+                            <i class="fas fa-clipboard-list fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Monthly Progress Report Template</h5>
+                        <p class="card-text text-secondary">Standard template for submitting monthly project progress reports</p>
+                        <div class="mb-3">
+                            <span class="badge bg-success resource-tag">Template</span>
+                            <span class="badge bg-primary resource-tag">DOCX</span>
+                            <span class="badge bg-info resource-tag">Editable</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Updated: Jun 2024</small>
+                            <button class="btn btn-outline-success btn-sm" onclick="downloadResource('progress-template')">
+                                <i class="fas fa-download me-1"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guide 2 -->
+            <div class="col-md-4 resource-item" data-category="guides">
+                <div class="card resource-card">
+                    <div class="card-body p-4">
+                        <div class="resource-icon bg-primary text-white">
+                            <i class="fas fa-camera fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">Data Upload Best Practices</h5>
+                        <p class="card-text text-secondary">Guide to capturing and uploading quality project data for verification</p>
+                        <div class="mb-3">
+                            <span class="badge bg-primary resource-tag">PDF</span>
+                            <span class="badge bg-warning resource-tag">Intermediate</span>
+                            <span class="badge bg-info resource-tag">20 pages</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Updated: May 2024</small>
+                            <button class="btn btn-outline-primary btn-sm" onclick="downloadResource('data-upload-guide')">
+                                <i class="fas fa-download me-1"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Library Section -->
+    <div class="bg-dark py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Video Tutorial Library</h2>
+                <p class="lead">Learn through step-by-step video guides</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="video-thumbnail bg-secondary" style="height: 80px;">
+                                        <div class="play-button" style="width: 40px; height: 40px;" onclick="playVideo('registration-tutorial')">
+                                            <i class="fas fa-play text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6>Complete Registration Process</h6>
+                                    <p class="small text-secondary mb-1">Step-by-step guide to platform registration</p>
+                                    <small class="text-secondary">Duration: 8:45</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="video-thumbnail bg-secondary" style="height: 80px;">
+                                        <div class="play-button" style="width: 40px; height: 40px;" onclick="playVideo('mobile-app-guide')">
+                                            <i class="fas fa-play text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6>Mobile App Usage Guide</h6>
+                                    <p class="small text-secondary mb-1">How to use the BlueCarbon mobile application</p>
+                                    <small class="text-secondary">Duration: 10:20</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="video-thumbnail bg-secondary" style="height: 80px;">
+                                        <div class="play-button" style="width: 40px; height: 40px;" onclick="playVideo('credit-selling')">
+                                            <i class="fas fa-play text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6>Selling Carbon Credits</h6>
+                                    <p class="small text-secondary mb-1">Complete process of selling your carbon credits</p>
+                                    <small class="text-secondary">Duration: 12:15</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="video-thumbnail bg-secondary" style="height: 80px;">
+                                        <div class="play-button" style="width: 40px; height: 40px;" onclick="playVideo('verification-process')">
+                                            <i class="fas fa-play text-white"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6>Verification Process Explained</h6>
+                                    <p class="small text-secondary mb-1">Understanding the carbon credit verification process</p>
+                                    <small class="text-secondary">Duration: 15:30</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-outline-primary">View All Videos</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Section -->
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Interactive Tools</h2>
+            <p class="lead">Practical tools to help you manage your carbon projects</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card resource-card">
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-calculator fa-3x text-warning mb-4"></i>
+                        <h4>Carbon Credit Estimator</h4>
+                        <p class="text-secondary mb-4">Calculate potential carbon credits based on your land area and project type</p>
+                        <button class="btn btn-warning btn-lg" onclick="openCalculator()">
+                            <i class="fas fa-calculator me-2"></i>Open Calculator
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card resource-card">
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-chart-line fa-3x text-success mb-4"></i>
+                        <h4>Revenue Projection Tool</h4>
+                        <p class="text-secondary mb-4">Estimate potential earnings from carbon credit sales over time</p>
+                        <button class="btn btn-success btn-lg" onclick="openRevenueTool()">
+                            <i class="fas fa-chart-line me-2"></i>Open Tool
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-primary text-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3 class="fw-bold">Stay Updated</h3>
+                    <p class="mb-0">Subscribe to receive new resources and platform updates</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group input-group-lg">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-light" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const resources = document.querySelectorAll('.resource-item');
+                
+                resources.forEach(resource => {
+                    if (filter === 'all' || resource.getAttribute('data-category') === filter) {
+                        resource.style.display = 'block';
+                    } else {
+                        resource.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function downloadResource(resourceId) {
+            alert(`Downloading ${resourceId}...`);
+            // Implementation would trigger file download
+        }
+
+        function playVideo(videoId) {
+            alert(`Playing video: ${videoId}`);
+            // Implementation would open video player
+        }
+
+        function openCalculator() {
+            alert('Opening Carbon Credit Calculator...');
+            // Implementation would open calculator tool
+        }
+
+        function openRevenueTool() {
+            alert('Opening Revenue Projection Tool...');
+            // Implementation would open revenue tool
+        }
+
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

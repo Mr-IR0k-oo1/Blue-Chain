@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Carbon Credit Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-leaf"></i> Blue Carbon Credit Calculator</h1>
+            <p>Estimate carbon sequestration and credit generation for coastal ecosystem restoration projects</p>
+        </header>
+
+        <div class="card">
+            <div class="calculator-container">
+                <div class="input-section">
+                    <h2><i class="fas fa-calculator"></i> Project Details</h2>
+                    
+                    <div class="input-group">
+                        <label for="ecosystem-type">Ecosystem Type</label>
+                        <select id="ecosystem-type">
+                            <option value="mangrove">Mangrove Forest</option>
+                            <option value="seagrass">Seagrass Meadow</option>
+                            <option value="saltmarsh">Salt Marsh</option>
+                            <option value="other">Other Coastal Vegetation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="area">Project Area (hectares)</label>
+                        <input type="number" id="area" min="0" step="0.1" placeholder="Enter area in hectares">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="duration">Project Duration (years)</label>
+                        <input type="number" id="duration" min="1" max="50" value="10">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="location">Geographic Location</label>
+                        <select id="location">
+                            <option value="east">East Coast</option>
+                            <option value="west">West Coast</option>
+                            <option value="islands">Islands</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="previous-land-use">Previous Land Use</label>
+                        <select id="previous-land-use">
+                            <option value="degraded">Degraded Land</option>
+                            <option value="aquaculture">Aquaculture Pond</option>
+                            <option value="agriculture">Agricultural Land</option>
+                            <option value="barren">Barren Land</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button class="calculate-btn" id="calculate-btn">
+                        <i class="fas fa-calculator"></i> Calculate Carbon Credits
+                    </button>
+                </div>
+                
+                <div class="results-section">
+                    <h2><i class="fas fa-chart-line"></i> Results</h2>
+                    
+                    <div class="result-card">
+                        <h3>Estimated Carbon Sequestration</h3>
+                        <div class="result-value" id="total-sequestration">0 <span class="result-unit">tCO₂e</span></div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Potential Carbon Credits</h3>
+                        <div class="result-value" id="total-credits">0 <span class="result-unit">credits</span></div>
+                        <p>1 credit = 1 tonne of CO₂ equivalent</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Estimated Annual Value</h3>
+                        <div class="result-value" id="annual-value">₹0 <span class="result-unit">/year</span></div>
+                        <p>Based on current market rates</p>
+                    </div>
+                    
+                    <div class="breakdown">
+                        <h3>Annual Breakdown</h3>
+                        <div class="breakdown-item">
+                            <span>Carbon Sequestration:</span>
+                            <span id="annual-sequestration">0 tCO₂e/year</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Carbon Credits:</span>
+                            <span id="annual-credits">0 credits/year</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Estimated Revenue:</span>
+                            <span id="annual-revenue">₹0/year</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> About Blue Carbon</h3>
+                <p>Blue carbon refers to carbon captured by ocean and coastal ecosystems, including mangroves, seagrasses, and salt marshes. These ecosystems sequester carbon at rates up to 10 times higher than terrestrial forests.</p>
+                
+                <div class="ecosystem-info">
+                    <div class="ecosystem-item">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="ecosystem-details">
+                            <h4>Mangroves</h4>
+                            <p>Average sequestration: 6-8 tCO₂e/ha/year</p>
+                        </div>
+                    </div>
+                    
+                    <div class="ecosystem-item">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="ecosystem-details">
+                            <h4>Seagrass Meadows</h4>
+                            <p>Average sequestration: 4-6 tCO₂e/ha/year</p>
+                        </div>
+                    </div>
+                    
+                    <div class="ecosystem-item">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="ecosystem-details">
+                            <h4>Salt Marshes</h4>
+                            <p>Average sequestration: 3-5 tCO₂e/ha/year</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-database"></i> Calculation Methodology</h3>
+                <p>Our calculator uses IPCC-approved methodologies and region-specific data to estimate carbon sequestration potential.</p>
+                <p>Factors considered:</p>
+                <ul style="margin-left: 20px; margin-top: 10px; color: #b0bec5;">
+                    <li>Ecosystem type and health</li>
+                    <li>Geographic location and climate</li>
+                    <li>Previous land use</li>
+                    <li>Project duration and management practices</li>
+                </ul>
+                <p style="margin-top: 15px;">These estimates are for planning purposes. Actual credits are issued after verification through our blockchain-based MRV system.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Blockchain-Based Carbon Registry and MRV System | Ministry of Earth Sciences (MoES)</p>
+            <p>This calculator provides estimates based on standard values. Actual carbon sequestration may vary based on specific site conditions.</p>
+        </footer>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

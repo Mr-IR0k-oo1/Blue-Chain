@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Credit Marketplace - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>
+                BlueCarbon India
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace.html">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link" href="calculator.html">Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white" href="register-company.html">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Marketplace Header -->
+    <div class="marketplace-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold">Carbon Credit Marketplace</h1>
+                    <p class="lead mb-0">Trade verified blue carbon credits with complete transparency</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-dark text-dark rounded p-3">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <small class="text-secondary">Current Market Price</small>
+                                <h4 class="text-success mb-0">₹512/credit</h4>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-secondary">24h Change</small>
+                                <h5 class="text-success mb-0">+3.2% ↗</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Market Statistics -->
+    <div class="container">
+        <div class="market-stats">
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <h3 class="text-primary">45,620</h3>
+                    <p class="mb-0">Credits Available</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-success">127</h3>
+                    <p class="mb-0">Active Projects</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-warning">89</h3>
+                    <p class="mb-0">Verified Sellers</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="text-info">42</h3>
+                    <p class="mb-0">Corporate Buyers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-md-3">
+                <div class="filter-sidebar">
+                    <h5 class="mb-4">Filters</h5>
+                    
+                    <!-- Project Type -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Project Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="mangrove" checked>
+                            <label class="form-check-label" for="mangrove">
+                                Mangrove Restoration
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="seagrass" checked>
+                            <label class="form-check-label" for="seagrass">
+                                Seagrass Rehabilitation
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="afforestation">
+                            <label class="form-check-label" for="afforestation">
+                                Coastal Afforestation
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="wetland">
+                            <label class="form-check-label" for="wetland">
+                                Wetland Conservation
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Location</label>
+                        <select class="form-select">
+                            <option>All Regions</option>
+                            <option>Sundarbans (WB)</option>
+                            <option>Andaman & Nicobar</option>
+                            <option>Lakshadweep</option>
+                            <option>Goa Coast</option>
+                            <option>Kerala Backwaters</option>
+                            <option>Odisha Coast</option>
+                        </select>
+                    </div>
+
+                    <!-- Verification Status -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Verification Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="verification" id="verified" checked>
+                            <label class="form-check-label" for="verified">
+                                Verified Only
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="verification" id="all">
+                            <label class="form-check-label" for="all">
+                                All Projects
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Price Range (per credit)</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="number" class="form-control" placeholder="Min" value="450">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control" placeholder="Max" value="600">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Filters -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Impact Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="biodiversity">
+                            <label class="form-check-label" for="biodiversity">
+                                Biodiversity
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="livelihood">
+                            <label class="form-check-label" for="livelihood">
+                                Livelihood Support
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="women">
+                            <label class="form-check-label" for="women">
+                                Women-led
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary w-100">Apply Filters</button>
+                    <button class="btn btn-outline-secondary w-100 mt-2">Reset</button>
+                </div>
+
+                <!-- Market Trends -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h6>Market Trends</h6>
+                        <div class="credit-chart">
+                            <div class="text-center">
+                                <i class="fas fa-chart-line fa-2x mb-2"></i>
+                                <div>Price Trend +12%</div>
+                            </div>
+                        </div>
+                        <small class="text-secondary">Carbon credit prices trending upward due to increased corporate demand.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="col-md-9">
+                <!-- Search and Sort -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex gap-2">
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search projects...">
+                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                Sort by: Newest
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
+                                <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
+                                <li><a class="dropdown-item" href="#">Verification Date</a></li>
+                                <li><a class="dropdown-item" href="#">Credit Volume</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-secondary">Showing 24 of 127 projects</span>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="row">
+                    <!-- Project 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card blockchain-verified">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Verified
+                                </span>
+                                
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title">Sundarbans Mangrove Phase 1</h5>
+                                </div>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Sundarbans, West Bengal
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
+                                    <span class="impact-tag badge bg-success">Livelihood</span>
+                                    <span class="impact-tag badge bg-info">Women-led</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag">₹500/credit</div>
+                                        <small class="text-secondary">500 credits available</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-success">250 tCO2e</div>
+                                        <small class="text-secondary">Verified</small>
+                                    </div>
+                                </div>
+
+                                <!-- Blockchain Info -->
+                                <div class="mb-3 p-2 bg-dark rounded">
+                                    <small class="text-secondary d-block">Blockchain Verified</small>
+                                    <div class="transaction-hash">
+                                        0x8a3f...c42b
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="viewProjectDetails(1)">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="addToCart(1)">
+                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card blockchain-verified">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Verified
+                                </span>
+                                
+                                <h5 class="card-title">Goa Seagrass Restoration</h5>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Goa Coast
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
+                                    <span class="impact-tag badge bg-warning">Community</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag">₹525/credit</div>
+                                        <small class="text-secondary">300 credits available</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-success">150 tCO2e</div>
+                                        <small class="text-secondary">Verified</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 p-2 bg-dark rounded">
+                                    <small class="text-secondary d-block">Blockchain Verified</small>
+                                    <div class="transaction-hash">
+                                        0x7b2e...d91a
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </button>
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 - Auction -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card border-warning">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge auction-badge">
+                                    <i class="fas fa-gavel me-1"></i>Live Auction
+                                </span>
+                                
+                                <h5 class="card-title">Andaman Coastal Forest</h5>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Andaman Islands
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
+                                    <span class="impact-tag badge bg-success">Endangered Species</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag">₹550/credit</div>
+                                        <small class="text-secondary">Current Bid</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-warning">750 tCO2e</div>
+                                        <small class="text-secondary">Est. Available</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-warning" style="width: 65%"></div>
+                                    </div>
+                                    <small class="text-secondary">Auction ends in 2 days, 4 hours</small>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Auction
+                                    </button>
+                                    <button class="btn btn-warning btn-sm">
+                                        <i class="fas fa-hand-paper me-1"></i>Place Bid
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge bg-secondary">
+                                    <i class="fas fa-clock me-1"></i>Pending
+                                </span>
+                                
+                                <h5 class="card-title">Kerala Backwaters Mangrove</h5>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Kerala Backwaters
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
+                                    <span class="impact-tag badge bg-info">Tourism</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag text-secondary">₹480/credit</div>
+                                        <small class="text-secondary">Est. Price</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-secondary">400 tCO2e</div>
+                                        <small class="text-secondary">Under Verification</small>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-bell me-1"></i>Notify Me
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card blockchain-verified">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Verified
+                                </span>
+                                
+                                <h5 class="card-title">Odisha Salt Marsh Conservation</h5>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Odisha Coast
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
+                                    <span class="impact-tag badge bg-success">Livelihood</span>
+                                    <span class="impact-tag badge bg-info">Women-led</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag">₹495/credit</div>
+                                        <small class="text-secondary">600 credits available</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-success">300 tCO2e</div>
+                                        <small class="text-secondary">Verified</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 p-2 bg-dark rounded">
+                                    <small class="text-secondary d-block">Blockchain Verified</small>
+                                    <div class="transaction-hash">
+                                        0x9c4d...e72f
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </button>
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card project-card blockchain-verified">
+                            <div class="card-body position-relative">
+                                <span class="verified-badge badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Premium
+                                </span>
+                                
+                                <h5 class="card-title">Lakshadweep Coral & Seagrass</h5>
+                                
+                                <p class="text-secondary small mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Lakshadweep Islands
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <span class="impact-tag badge bg-primary">Marine Biodiversity</span>
+                                    <span class="impact-tag badge bg-danger">Coral Protection</span>
+                                    <span class="impact-tag badge bg-info">Eco-tourism</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="price-tag">₹575/credit</div>
+                                        <small class="text-secondary">200 credits available</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold text-success">100 tCO2e</div>
+                                        <small class="text-secondary">Premium Verified</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 p-2 bg-dark rounded">
+                                    <small class="text-secondary d-block">Blockchain Verified</small>
+                                    <div class="transaction-hash">
+                                        0xa5b1...f83c
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </button>
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Carbon Credit Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Credits</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartItems">
+                                <!-- Cart items will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        <h5>Total: <span id="cartTotal">₹0</span></h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                    <button type="button" class="btn btn-primary" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

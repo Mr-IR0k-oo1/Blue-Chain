@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Registration Header -->
+    <div class="registration-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold">Farmer & Coastal Community Registration</h1>
+                    <p class="lead mb-0">Join India's Premier Blue Carbon Credit Platform</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-dark text-dark rounded p-3">
+                        <small class="text-secondary">Already registered?</small><br>
+                        <a href="login.html" class="btn btn-primary btn-sm">Login Here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="container">
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Personal Details</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Aadhaar Verification</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Land Details</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Bank & Final</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container mb-5">
+        <form id="farmerRegistrationForm">
+            <!-- Step 1: Personal Details -->
+            <div class="form-section active" id="step1">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Step 1: Personal Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" name="fullName" required 
+                                           placeholder="As per Aadhaar card">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Father's/Husband's Name *</label>
+                                    <input type="text" class="form-control" name="fatherName" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Birth *</label>
+                                    <input type="date" class="form-control" name="dob" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Gender *</label>
+                                    <select class="form-select" name="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Mobile Number *</label>
+                                    <input type="tel" class="form-control" name="mobile" 
+                                           pattern="[0-9]{10}" required placeholder="10-digit mobile number">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" name="email" 
+                                           placeholder="Optional">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Full Address *</label>
+                            <textarea class="form-control" name="address" rows="3" required 
+                                      placeholder="House No, Street, Village/Town"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">State *</label>
+                                    <select class="form-select" name="state" required>
+                                        <option value="">Select State</option>
+                                        <option value="west_bengal">West Bengal</option>
+                                        <option value="odisha">Odisha</option>
+                                        <option value="andhra">Andhra Pradesh</option>
+                                        <option value="tamil_nadu">Tamil Nadu</option>
+                                        <option value="gujarat">Gujarat</option>
+                                        <option value="maharashtra">Maharashtra</option>
+                                        <option value="kerala">Kerala</option>
+                                        <option value="goa">Goa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">District *</label>
+                                    <input type="text" class="form-control" name="district" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">PIN Code *</label>
+                                    <input type="text" class="form-control" name="pincode" 
+                                           pattern="[0-9]{6}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kisan Card Number *</label>
+                            <input type="text" class="form-control" name="kisanCard" 
+                                   pattern="[0-9]{12}" required placeholder="12-digit Kisan Card number">
+                            <div class="form-text">12-digit number from your Kisan Credit Card</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                Next: Aadhaar Verification <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Aadhaar Verification -->
+            <div class="form-section" id="step2">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-id-card me-2"></i>Step 2: Aadhaar Verification
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="aadhaar-verification">
+                            <h5><i class="fas fa-shield-alt me-2"></i>Secure Aadhaar Verification</h5>
+                            <p class="mb-3">Your Aadhaar details are securely verified through government-approved systems</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Aadhaar Number *</label>
+                                        <input type="text" class="form-control" name="aadhaarNumber" 
+                                               pattern="[0-9]{12}" required placeholder="12-digit Aadhaar number">
+                                        <div class="form-text">Enter 12-digit Aadhaar number without spaces</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirm Aadhaar Number *</label>
+                                        <input type="text" class="form-control" name="confirmAadhaar" 
+                                               pattern="[0-9]{12}" required placeholder="Re-enter Aadhaar number">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Aadhaar Verification Method *</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="verificationMethod" 
+                                                   id="otpVerification" value="otp" checked>
+                                            <label class="form-check-label" for="otpVerification">
+                                                <i class="fas fa-mobile-alt me-2"></i>OTP Verification
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="verificationMethod" 
+                                                   id="biometricVerification" value="biometric">
+                                            <label class="form-check-label" for="biometricVerification">
+                                                <i class="fas fa-fingerprint me-2"></i>Biometric Verification
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- OTP Verification -->
+                            <div id="otpSection">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <button type="button" class="btn btn-outline-primary" onclick="sendAadhaarOTP()">
+                                            <i class="fas fa-paper-plane me-2"></i>Send OTP to Registered Mobile
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-3" id="otpInputSection" style="display: none;">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Enter OTP *</label>
+                                        <input type="text" class="form-control" name="aadhaarOTP" 
+                                               pattern="[0-9]{6}" placeholder="6-digit OTP">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">&nbsp;</label>
+                                        <div>
+                                            <button type="button" class="btn btn-success" onclick="verifyAadhaarOTP()">
+                                                Verify OTP
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="resendOTP()">
+                                                Resend OTP
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Biometric Verification -->
+                            <div id="biometricSection" style="display: none;">
+                                <div class="biometric-section">
+                                    <i class="fas fa-fingerprint fa-3x text-primary mb-3"></i>
+                                    <h6>Biometric Authentication Required</h6>
+                                    <p class="small">Please visit nearest Aadhaar Seva Kendra or use registered device for biometric verification</p>
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Find Nearest Center
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Document Upload -->
+                        <div class="mb-4">
+                            <label class="form-label">Upload Aadhaar Card (Front & Back) *</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="document-upload" onclick="document.getElementById('aadhaarFront').click()">
+                                        <i class="fas fa-camera fa-2x text-secondary mb-3"></i>
+                                        <p>Click to upload Aadhaar Front</p>
+                                        <small class="text-secondary">Max 2MB, JPG/PNG/PDF</small>
+                                        <input type="file" id="aadhaarFront" accept="image/*,.pdf" style="display: none;" 
+                                               onchange="previewDocument(this, 'aadhaarFrontPreview')">
+                                        <img id="aadhaarFrontPreview" class="document-preview mt-2">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="document-upload" onclick="document.getElementById('aadhaarBack').click()">
+                                        <i class="fas fa-camera fa-2x text-secondary mb-3"></i>
+                                        <p>Click to upload Aadhaar Back</p>
+                                        <small class="text-secondary">Max 2MB, JPG/PNG/PDF</small>
+                                        <input type="file" id="aadhaarBack" accept="image/*,.pdf" style="display: none;"
+                                               onchange="previewDocument(this, 'aadhaarBackPreview')">
+                                        <img id="aadhaarBackPreview" class="document-preview mt-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                Next: Land Details <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Land Details -->
+            <div class="form-section" id="step3">
+                <div class="card">
+                    <div class="card-header bg-warning text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-tractor me-2"></i>Step 3: Land & Project Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Land Ownership Details</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Land Ownership Type *</label>
+                            <select class="form-select" name="landOwnership" required>
+                                <option value="">Select Ownership Type</option>
+                                <option value="owned">Owned</option>
+                                <option value="leased">Leased</option>
+                                <option value="community">Community Land</option>
+                                <option value="government">Government Land</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Total Land Area (Hectares) *</label>
+                                    <input type="number" class="form-control" name="totalArea" 
+                                           step="0.01" min="0.1" required placeholder="e.g., 5.0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Land Survey Number *</label>
+                                    <input type="text" class="form-control" name="surveyNumber" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Land Address/Location *</label>
+                            <textarea class="form-control" name="landAddress" rows="2" required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Upload Land Documents *</label>
+                            <div class="document-upload" onclick="document.getElementById('landDoc').click()">
+                                <i class="fas fa-file-pdf fa-2x text-secondary mb-3"></i>
+                                <p>Click to upload Land Record/7-12 Extract</p>
+                                <small class="text-secondary">Max 5MB, PDF/Image</small>
+                                <input type="file" id="landDoc" accept=".pdf,image/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Project Preferences</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Carbon Project Type *</label>
+                            <select class="form-select" name="projectType" required>
+                                <option value="">Select Project Type</option>
+                                <option value="mangrove">Mangrove Restoration</option>
+                                <option value="afforestation">Coastal Afforestation</option>
+                                <option value="seagrass">Seagrass Rehabilitation</option>
+                                <option value="wetland">Wetland Conservation</option>
+                                <option value="mixed">Mixed Restoration</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Expected Project Start Date *</label>
+                            <input type="date" class="form-control" name="projectStartDate" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Previous Experience (if any)</label>
+                            <textarea class="form-control" name="experience" rows="3" 
+                                      placeholder="Describe any previous experience in restoration projects..."></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4)">
+                                Next: Bank & Final <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Bank & Final -->
+            <div class="form-section" id="step4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-university me-2"></i>Step 4: Bank Details & Finalization
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Bank Account Details for Payments</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Bank Name *</label>
+                                    <input type="text" class="form-control" name="bankName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Branch Name *</label>
+                                    <input type="text" class="form-control" name="branchName" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Number *</label>
+                                    <input type="text" class="form-control" name="accountNumber" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm Account Number *</label>
+                                    <input type="text" class="form-control" name="confirmAccountNumber" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">IFSC Code *</label>
+                                    <input type="text" class="form-control" name="ifscCode" 
+                                           pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required 
+                                           placeholder="e.g., SBIN0000123">
+                                    <div class="form-text">11-character IFSC code</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Type *</label>
+                                    <select class="form-select" name="accountType" required>
+                                        <option value="">Select Account Type</option>
+                                        <option value="savings">Savings Account</option>
+                                        <option value="current">Current Account</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Upload Cancelled Cheque or Bank Statement *</label>
+                            <div class="document-upload" onclick="document.getElementById('bankDoc').click()">
+                                <i class="fas fa-file-invoice-dollar fa-2x text-secondary mb-3"></i>
+                                <p>Click to upload Bank Proof</p>
+                                <small class="text-secondary">Max 2MB, PDF/Image</small>
+                                <input type="file" id="bankDoc" accept=".pdf,image/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Terms & Declaration</h5>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I have read and agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="declareInfo" required>
+                                <label class="form-check-label" for="declareInfo">
+                                    I declare that all information provided is true and correct to the best of my knowledge *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="consentData" required>
+                                <label class="form-check-label" for="consentData">
+                                    I consent to sharing my data with relevant government authorities for verification and monitoring purposes *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check-circle me-2"></i>Complete Registration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Registration Progress -->
+        <div class="card mt-4">
+            <div class="card-body text-center">
+                <h6>Registration Progress</h6>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar" id="progressBar" style="width: 25%"></div>
+                </div>
+                <small class="text-secondary" id="progressText">Step 1 of 4 - Personal Details</small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            const stepTexts = [
+                'Step 1 of 4 - Personal Details',
+                'Step 2 of 4 - Aadhaar Verification',
+                'Step 3 of 4 - Land Details',
+                'Step 4 of 4 - Bank & Final'
+            ];
+            document.getElementById('progressText').textContent = stepTexts[currentStep - 1];
+        }
+
+        function nextStep(step) {
+            if (validateStep(currentStep)) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                
+                currentStep = step;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                
+                // Mark previous steps as completed
+                for (let i = 1; i < currentStep; i++) {
+                    document.querySelector(`.step[data-step="${i}"]`).classList.add('completed');
+                }
+                
+                updateProgress();
+            }
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            
+            updateProgress();
+        }
+
+        function validateStep(step) {
+            // Basic validation - in real app, this would be more comprehensive
+            const form = document.getElementById('farmerRegistrationForm');
+            const inputs = form.querySelectorAll(`#step${step} [required]`);
+            
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    input.focus();
+                    alert(`Please fill in ${input.labels[0].textContent}`);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function sendAadhaarOTP() {
+            const aadhaarNumber = document.querySelector('input[name="aadhaarNumber"]').value;
+            if (aadhaarNumber.length !== 12) {
+                alert('Please enter valid 12-digit Aadhaar number');
+                return;
+            }
+            
+            // Simulate OTP sending
+            document.getElementById('otpInputSection').style.display = 'block';
+            alert('OTP sent to your registered mobile number ending with ****' + aadhaarNumber.slice(-4));
+        }
+
+        function verifyAadhaarOTP() {
+            const otp = document.querySelector('input[name="aadhaarOTP"]').value;
+            if (otp.length !== 6) {
+                alert('Please enter 6-digit OTP');
+                return;
+            }
+            
+            // Simulate OTP verification
+            alert('Aadhaar verification successful!');
+        }
+
+        function resendOTP() {
+            alert('OTP resent to your registered mobile number');
+        }
+
+        function previewDocument(input, previewId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle verification method change
+        document.querySelectorAll('input[name="verificationMethod"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'otp') {
+                    document.getElementById('otpSection').style.display = 'block';
+                    document.getElementById('biometricSection').style.display = 'none';
+                } else {
+                    document.getElementById('otpSection').style.display = 'none';
+                    document.getElementById('biometricSection').style.display = 'block';
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('farmerRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateStep(4)) {
+                // Simulate registration success
+                alert('Registration submitted successfully! You will receive verification status within 48 hours.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

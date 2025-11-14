@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Registration - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Registration Header -->
+    <div class="registration-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold">Corporate Registration</h1>
+                    <p class="lead mb-0">Join India's Premier Blue Carbon Credit Platform as a Corporate Buyer</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-dark text-dark rounded p-3">
+                        <small class="text-secondary">Already registered?</small><br>
+                        <a href="login.html" class="btn btn-primary btn-sm">Login Here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Benefits -->
+    <div class="container">
+        <div class="registration-benefits">
+            <h4 class="mb-4"><i class="fas fa-crown me-2 text-warning"></i>Benefits for Corporate Partners</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">ESG Compliance</h6>
+                            <p class="mb-0 small">Meet regulatory requirements and enhance your sustainability reporting</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Verified Credits</h6>
+                            <p class="mb-0 small">Blockchain-verified carbon credits with transparent origin</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">CSR Opportunities</h6>
+                            <p class="mb-0 small">Support coastal communities and biodiversity conservation</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Brand Enhancement</h6>
+                            <p class="mb-0 small">Strengthen your brand with authentic environmental action</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="container">
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Business Details</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Legal & Tax</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Contact & ESG</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Bank & Final</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container mb-5">
+        <form id="companyRegistrationForm">
+            <!-- Step 1: Business Details -->
+            <div class="form-section active" id="step1">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-building me-2"></i>Step 1: Business Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Business Type *</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="business-type-card" onclick="selectBusinessType('private')" id="private-card">
+                                        <i class="fas fa-industry fa-2x text-primary mb-3"></i>
+                                        <h6>Private Limited</h6>
+                                        <small class="text-secondary">Registered under Companies Act</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="business-type-card" onclick="selectBusinessType('public')" id="public-card">
+                                        <i class="fas fa-landmark fa-2x text-success mb-3"></i>
+                                        <h6>Public Limited</h6>
+                                        <small class="text-secondary">Listed on stock exchange</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="business-type-card" onclick="selectBusinessType('llp')" id="llp-card">
+                                        <i class="fas fa-handshake fa-2x text-warning mb-3"></i>
+                                        <h6>LLP</h6>
+                                        <small class="text-secondary">Limited Liability Partnership</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="businessType" id="businessType" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Company Name *</label>
+                                    <input type="text" class="form-control" name="companyName" required 
+                                           placeholder="Legal registered name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Trade Name (if different)</label>
+                                    <input type="text" class="form-control" name="tradeName" 
+                                           placeholder="Brand/trading name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Year of Establishment *</label>
+                                    <input type="number" class="form-control" name="establishmentYear" 
+                                           min="1900" max="2024" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Industry Sector *</label>
+                                    <select class="form-select" name="industrySector" required>
+                                        <option value="">Select Industry</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="technology">Technology & IT</option>
+                                        <option value="energy">Energy & Utilities</option>
+                                        <option value="finance">Banking & Finance</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="retail">Retail & E-commerce</option>
+                                        <option value="transportation">Transportation & Logistics</option>
+                                        <option value="construction">Construction & Real Estate</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Company Description *</label>
+                            <textarea class="form-control" name="companyDescription" rows="3" required 
+                                      placeholder="Brief description of your business activities..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Number of Employees *</label>
+                            <select class="form-select" name="employeeCount" required>
+                                <option value="">Select Range</option>
+                                <option value="1-10">1-10</option>
+                                <option value="11-50">11-50</option>
+                                <option value="51-200">51-200</option>
+                                <option value="201-500">201-500</option>
+                                <option value="501-1000">501-1000</option>
+                                <option value="1001-5000">1001-5000</option>
+                                <option value="5000+">5000+</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                Next: Legal & Tax <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Legal & Tax Details -->
+            <div class="form-section" id="step2">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-gavel me-2"></i>Step 2: Legal & Tax Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Registration Details</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">CIN (Corporate Identity Number) *</label>
+                                    <input type="text" class="form-control" name="cinNumber" required 
+                                           pattern="[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}" 
+                                           placeholder="e.g., U72900MH2022PTC123456">
+                                    <div class="form-text">21-character Corporate Identity Number</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">GST Number *</label>
+                                    <input type="text" class="form-control" name="gstNumber" required 
+                                           pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}" 
+                                           placeholder="e.g., 27AABCU9603R1ZM">
+                                    <div class="form-text">15-character GST Identification Number</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">PAN Number *</label>
+                                    <input type="text" class="form-control" name="panNumber" required 
+                                           pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" 
+                                           placeholder="e.g., AABCT1234D">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">TAN Number (if applicable)</label>
+                                    <input type="text" class="form-control" name="tanNumber" 
+                                           pattern="[A-Z]{4}[0-9]{5}[A-Z]{1}" 
+                                           placeholder="e.g., BLRE01234E">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Registered Office Address *</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredAddress" required 
+                                               placeholder="Full address as per registration">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredCity" required 
+                                               placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <select class="form-select" name="registeredState" required>
+                                            <option value="">Select State</option>
+                                            <option value="maharashtra">Maharashtra</option>
+                                            <option value="delhi">Delhi</option>
+                                            <option value="karnataka">Karnataka</option>
+                                            <option value="tamil_nadu">Tamil Nadu</option>
+                                            <option value="gujarat">Gujarat</option>
+                                            <option value="west_bengal">West Bengal</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="registeredPincode" required 
+                                               pattern="[0-9]{6}" placeholder="PIN Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Document Upload</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('certificateIncorporation').click()">
+                                    <i class="fas fa-file-contract fa-2x text-secondary mb-3"></i>
+                                    <p>Certificate of Incorporation</p>
+                                    <small class="text-secondary">Max 2MB, PDF</small>
+                                    <input type="file" id="certificateIncorporation" accept=".pdf" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('gstCertificate').click()">
+                                    <i class="fas fa-receipt fa-2x text-secondary mb-3"></i>
+                                    <p>GST Certificate</p>
+                                    <small class="text-secondary">Max 2MB, PDF</small>
+                                    <input type="file" id="gstCertificate" accept=".pdf" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="document-upload" onclick="document.getElementById('panCard').click()">
+                                    <i class="fas fa-address-card fa-2x text-secondary mb-3"></i>
+                                    <p>PAN Card</p>
+                                    <small class="text-secondary">Max 2MB, PDF/Image</small>
+                                    <input type="file" id="panCard" accept=".pdf,image/*" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                Next: Contact & ESG <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Contact & ESG -->
+            <div class="form-section" id="step3">
+                <div class="card">
+                    <div class="card-header bg-warning text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-users me-2"></i>Step 3: Contact & ESG Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Primary Contact Person</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" name="contactName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Designation *</label>
+                                    <input type="text" class="form-control" name="contactDesignation" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" name="contactEmail" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Mobile Number *</label>
+                                    <input type="tel" class="form-control" name="contactMobile" 
+                                           pattern="[0-9]{10}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Authorized Signatory Details *</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="signatoryName" required 
+                                               placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="signatoryDesignation" required 
+                                               placeholder="Designation">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">ESG & Sustainability</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Current ESG Rating (if any)</label>
+                            <select class="form-select" name="esgRating">
+                                <option value="">Select Rating</option>
+                                <option value="aaa">AAA</option>
+                                <option value="aa">AA</option>
+                                <option value="a">A</option>
+                                <option value="bbb">BBB</option>
+                                <option value="bb">BB</option>
+                                <option value="b">B</option>
+                                <option value="ccc">CCC</option>
+                                <option value="not_rated">Not Rated</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Carbon Neutrality Target Year</label>
+                            <input type="number" class="form-control" name="carbonNeutralityYear" 
+                                   min="2024" max="2050" placeholder="e.g., 2030">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Annual Carbon Footprint (tCO2e)</label>
+                            <input type="number" class="form-control" name="annualCarbonFootprint" 
+                                   step="0.1" min="0" placeholder="Estimated annual emissions">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Sustainability Initiatives</label>
+                            <textarea class="form-control" name="sustainabilityInitiatives" rows="3" 
+                                      placeholder="Describe your current sustainability initiatives, if any..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Expected Monthly Credit Purchase (tCO2e)</label>
+                            <select class="form-select" name="expectedPurchase" required>
+                                <option value="">Select Range</option>
+                                <option value="1-50">1-50</option>
+                                <option value="51-100">51-100</option>
+                                <option value="101-250">101-250</option>
+                                <option value="251-500">251-500</option>
+                                <option value="501-1000">501-1000</option>
+                                <option value="1000+">1000+</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4)">
+                                Next: Bank & Final <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Bank & Final -->
+            <div class="form-section" id="step4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-university me-2"></i>Step 4: Bank Details & Finalization
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="mb-4">Bank Account Details</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Bank Name *</label>
+                                    <input type="text" class="form-control" name="bankName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Branch Name *</label>
+                                    <input type="text" class="form-control" name="branchName" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Number *</label>
+                                    <input type="text" class="form-control" name="accountNumber" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm Account Number *</label>
+                                    <input type="text" class="form-control" name="confirmAccountNumber" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">IFSC Code *</label>
+                                    <input type="text" class="form-control" name="ifscCode" 
+                                           pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required 
+                                           placeholder="e.g., SBIN0000123">
+                                    <div class="form-text">11-character IFSC code</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Type *</label>
+                                    <select class="form-select" name="accountType" required>
+                                        <option value="">Select Account Type</option>
+                                        <option value="current">Current Account</option>
+                                        <option value="savings">Savings Account</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Upload Cancelled Cheque *</label>
+                            <div class="document-upload" onclick="document.getElementById('cancelledCheque').click()">
+                                <i class="fas fa-file-invoice-dollar fa-2x text-secondary mb-3"></i>
+                                <p>Click to upload Cancelled Cheque</p>
+                                <small class="text-secondary">Max 2MB, PDF/Image</small>
+                                <input type="file" id="cancelledCheque" accept=".pdf,image/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <h5 class="mb-4">Terms & Declaration</h5>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I have read and agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="declareInfo" required>
+                                <label class="form-check-label" for="declareInfo">
+                                    I declare that all information provided is true and correct to the best of my knowledge *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="authorizedSignatory" required>
+                                <label class="form-check-label" for="authorizedSignatory">
+                                    I am an authorized signatory of the company and have the authority to enter into this agreement *
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check-circle me-2"></i>Complete Registration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Registration Progress -->
+        <div class="card mt-4">
+            <div class="card-body text-center">
+                <h6>Registration Progress</h6>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar" id="progressBar" style="width: 25%"></div>
+                </div>
+                <small class="text-secondary" id="progressText">Step 1 of 4 - Business Details</small>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
