@@ -6,8 +6,375 @@
     <title>Carbon Credit Marketplace - BlueCarbon India</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Enhanced Marketplace Styles */
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #141414;
+            --bg-card: #111111;
+            --bg-card-alt: #0f0f0f;
+            --bg-hover: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-primary: #ffffff;
+            --accent-success: #10b981;
+            --accent-warning: #fbbf24;
+            --accent-danger: #ef4444;
+            --accent-info: #3b82f6;
+            --border-color: #374151;
+            --border-light: #4b5563;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5), 0 10px 10px rgba(0, 0, 0, 0.4);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.65;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .marketplace-header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .marketplace-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .market-price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+        }
+
+        .market-stats {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 20px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            transition: var(--transition-normal);
+            margin-bottom: 25px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .project-card.blockchain-verified {
+            border-left: 4px solid var(--accent-success);
+        }
+
+        .project-card.border-warning {
+            border-left: 4px solid var(--accent-warning);
+        }
+
+        .verified-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+        }
+
+        .auction-badge {
+            background: linear-gradient(135deg, var(--accent-warning), #f59e0b) !important;
+            color: white;
+        }
+
+        .impact-tag {
+            font-size: 0.7rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 4px 8px;
+        }
+
+        .price-tag {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .transaction-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        /* Cart Styles */
+        .cart-item {
+            transition: 0.15s ease;
+        }
+
+        .cart-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            padding: 5px;
+        }
+
+        /* Loading and State Styles */
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Project Modal Styles */
+        .project-detail-section {
+            margin-bottom: 25px;
+        }
+
+        .project-detail-section h6 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .project-image:hover {
+            transform: scale(1.05);
+        }
+
+        .progress-bar-auction {
+            background: linear-gradient(135deg, var(--accent-warning), #f59e0b);
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 15px 20px;
+            box-shadow: var(--shadow-xl);
+            z-index: 1060;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 350px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--accent-success);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--accent-danger);
+        }
+
+        .toast-info {
+            border-left: 4px solid var(--accent-info);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-success .toast-icon {
+            color: var(--accent-success);
+        }
+
+        .toast-error .toast-icon {
+            color: var(--accent-danger);
+        }
+
+        .toast-info .toast-icon {
+            color: var(--accent-info);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+        }
+
+        .toast-message {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: var(--radius-sm);
+            transition: 0.15s ease;
+        }
+
+        .toast-close:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .marketplace-header {
+                padding: 40px 0;
+            }
+            
+            .market-stats {
+                padding: 20px;
+            }
+            
+            .filter-sidebar {
+                position: static;
+                margin-bottom: 25px;
+            }
+            
+            .project-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .toast {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .marketplace-header .display-4 {
+                font-size: 2rem;
+            }
+            
+            .quantity-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .project-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -23,7 +390,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="marketplace.html">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="marketplace.html">Marketplace</a></li>
                     <li class="nav-item"><a class="nav-link" href="calculator.html">Calculator</a></li>
                     <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
@@ -31,6 +398,12 @@
                         <a class="nav-link btn btn-primary text-white" href="register-company.html">
                             Register
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-outline-light position-relative" onclick="toggleCartModal()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">0</span>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -46,7 +419,7 @@
                     <p class="lead mb-0">Trade verified blue carbon credits with complete transparency</p>
                 </div>
                 <div class="col-md-4 text-end">
-                    <div class="bg-dark text-dark rounded p-3">
+                    <div class="market-price-card">
                         <div class="d-flex justify-content-between">
                             <div>
                                 <small class="text-secondary">Current Market Price</small>
@@ -68,19 +441,19 @@
         <div class="market-stats">
             <div class="row text-center">
                 <div class="col-md-3">
-                    <h3 class="text-primary">45,620</h3>
+                    <h3 class="text-primary" id="creditsAvailable">45,620</h3>
                     <p class="mb-0">Credits Available</p>
                 </div>
                 <div class="col-md-3">
-                    <h3 class="text-success">127</h3>
+                    <h3 class="text-success" id="activeProjects">127</h3>
                     <p class="mb-0">Active Projects</p>
                 </div>
                 <div class="col-md-3">
-                    <h3 class="text-warning">89</h3>
+                    <h3 class="text-warning" id="verifiedSellers">89</h3>
                     <p class="mb-0">Verified Sellers</p>
                 </div>
                 <div class="col-md-3">
-                    <h3 class="text-info">42</h3>
+                    <h3 class="text-info" id="corporateBuyers">42</h3>
                     <p class="mb-0">Corporate Buyers</p>
                 </div>
             </div>
@@ -96,25 +469,25 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Project Type</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="mangrove" checked>
+                            <input class="form-check-input" type="checkbox" id="mangrove" checked data-filter="type" value="mangrove">
                             <label class="form-check-label" for="mangrove">
                                 Mangrove Restoration
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="seagrass" checked>
+                            <input class="form-check-input" type="checkbox" id="seagrass" checked data-filter="type" value="seagrass">
                             <label class="form-check-label" for="seagrass">
                                 Seagrass Rehabilitation
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="afforestation">
+                            <input class="form-check-input" type="checkbox" id="afforestation" data-filter="type" value="afforestation">
                             <label class="form-check-label" for="afforestation">
                                 Coastal Afforestation
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="wetland">
+                            <input class="form-check-input" type="checkbox" id="wetland" data-filter="type" value="wetland">
                             <label class="form-check-label" for="wetland">
                                 Wetland Conservation
                             </label>
@@ -124,14 +497,22 @@
                     <!-- Location -->
                     <div class="mb-4">
                         <label class="form-label fw-bold">Location</label>
-                        <select class="form-select">
-                            <option>All Regions</option>
-                            <option>Sundarbans (WB)</option>
-                            <option>Andaman & Nicobar</option>
-                            <option>Lakshadweep</option>
-                            <option>Goa Coast</option>
-                            <option>Kerala Backwaters</option>
-                            <option>Odisha Coast</option>
+                        <select class="form-select" id="locationFilter">
+                            <option value="all">All Regions</option>
+                            <option value="sundarbans">Sundarbans (WB)</option>
+                            <option value="andaman">Andaman & Nicobar</option>
+                            <option value="lakshadweep">Lakshadweep</option>
+                            <option value="goa">Goa Coast</option>
+                            <option value="kerala">Kerala Backwaters</option>
+                            <option value="odisha">Odisha Coast</option>
+                            <option value="tamil-nadu">Tamil Nadu Coast</option>
+                            <option value="gujarat">Gujarat Coast</option>
+                            <option value="maharashtra">Maharashtra Coast</option>
+                            <option value="andhra">Andhra Coast</option>
+                            <option value="karnataka">Karnataka Coast</option>
+                            <option value="puducherry">Puducherry Coast</option>
+                            <option value="daman">Daman Coast</option>
+                            <option value="diu">Diu Coast</option>
                         </select>
                     </div>
 
@@ -139,13 +520,13 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Verification Status</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="verification" id="verified" checked>
+                            <input class="form-check-input" type="radio" name="verification" id="verified" checked value="verified">
                             <label class="form-check-label" for="verified">
                                 Verified Only
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="verification" id="all">
+                            <input class="form-check-input" type="radio" name="verification" id="all" value="all">
                             <label class="form-check-label" for="all">
                                 All Projects
                             </label>
@@ -157,10 +538,10 @@
                         <label class="form-label fw-bold">Price Range (per credit)</label>
                         <div class="row">
                             <div class="col-6">
-                                <input type="number" class="form-control" placeholder="Min" value="450">
+                                <input type="number" class="form-control" id="priceMin" placeholder="Min" value="450" min="0">
                             </div>
                             <div class="col-6">
-                                <input type="number" class="form-control" placeholder="Max" value="600">
+                                <input type="number" class="form-control" id="priceMax" placeholder="Max" value="600" min="0">
                             </div>
                         </div>
                     </div>
@@ -169,27 +550,27 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Impact Type</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="biodiversity">
+                            <input class="form-check-input" type="checkbox" id="biodiversity" data-filter="impact" value="biodiversity">
                             <label class="form-check-label" for="biodiversity">
                                 Biodiversity
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="livelihood">
+                            <input class="form-check-input" type="checkbox" id="livelihood" data-filter="impact" value="livelihood">
                             <label class="form-check-label" for="livelihood">
                                 Livelihood Support
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="women">
+                            <input class="form-check-input" type="checkbox" id="women" data-filter="impact" value="women">
                             <label class="form-check-label" for="women">
                                 Women-led
                             </label>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary w-100">Apply Filters</button>
-                    <button class="btn btn-outline-secondary w-100 mt-2">Reset</button>
+                    <button class="btn btn-primary w-100" onclick="applyFilters()">Apply Filters</button>
+                    <button class="btn btn-outline-secondary w-100 mt-2" onclick="resetFilters()">Reset</button>
                 </div>
 
                 <!-- Market Trends -->
@@ -213,324 +594,49 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex gap-2">
                         <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" placeholder="Search projects...">
-                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search projects...">
+                            <button class="btn btn-primary" onclick="searchProjects()"><i class="fas fa-search"></i></button>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" id="sortButton">
                                 Sort by: Newest
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
-                                <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
-                                <li><a class="dropdown-item" href="#">Verification Date</a></li>
-                                <li><a class="dropdown-item" href="#">Credit Volume</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortProjects('price-low')">Price: Low to High</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortProjects('price-high')">Price: High to Low</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortProjects('newest')">Verification Date</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortProjects('volume')">Credit Volume</a></li>
                             </ul>
                         </div>
                     </div>
                     <div>
-                        <span class="text-secondary">Showing 24 of 127 projects</span>
+                        <span class="text-secondary" id="projectCount">Showing 18 of 127 projects</span>
                     </div>
                 </div>
 
                 <!-- Projects Grid -->
-                <div class="row">
-                    <!-- Project 1 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card blockchain-verified">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge bg-success">
-                                    <i class="fas fa-check-circle me-1"></i>Verified
-                                </span>
-                                
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="card-title">Sundarbans Mangrove Phase 1</h5>
-                                </div>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Sundarbans, West Bengal
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
-                                    <span class="impact-tag badge bg-success">Livelihood</span>
-                                    <span class="impact-tag badge bg-info">Women-led</span>
-                                </div>
+                <div class="row" id="projectsGrid">
+                    <!-- Projects will be dynamically loaded here -->
+                </div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag">₹500/credit</div>
-                                        <small class="text-secondary">500 credits available</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-success">250 tCO2e</div>
-                                        <small class="text-secondary">Verified</small>
-                                    </div>
-                                </div>
-
-                                <!-- Blockchain Info -->
-                                <div class="mb-3 p-2 bg-dark rounded">
-                                    <small class="text-secondary d-block">Blockchain Verified</small>
-                                    <div class="transaction-hash">
-                                        0x8a3f...c42b
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary btn-sm" onclick="viewProjectDetails(1)">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                    <button class="btn btn-success btn-sm" onclick="addToCart(1)">
-                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center py-5" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
+                    <p class="mt-3">Loading projects...</p>
+                </div>
 
-                    <!-- Project 2 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card blockchain-verified">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge bg-success">
-                                    <i class="fas fa-check-circle me-1"></i>Verified
-                                </span>
-                                
-                                <h5 class="card-title">Goa Seagrass Restoration</h5>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Goa Coast
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
-                                    <span class="impact-tag badge bg-warning">Community</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag">₹525/credit</div>
-                                        <small class="text-secondary">300 credits available</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-success">150 tCO2e</div>
-                                        <small class="text-secondary">Verified</small>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 p-2 bg-dark rounded">
-                                    <small class="text-secondary d-block">Blockchain Verified</small>
-                                    <div class="transaction-hash">
-                                        0x7b2e...d91a
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3 - Auction -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card border-warning">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge auction-badge">
-                                    <i class="fas fa-gavel me-1"></i>Live Auction
-                                </span>
-                                
-                                <h5 class="card-title">Andaman Coastal Forest</h5>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Andaman Islands
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
-                                    <span class="impact-tag badge bg-success">Endangered Species</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag">₹550/credit</div>
-                                        <small class="text-secondary">Current Bid</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-warning">750 tCO2e</div>
-                                        <small class="text-secondary">Est. Available</small>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar bg-warning" style="width: 65%"></div>
-                                    </div>
-                                    <small class="text-secondary">Auction ends in 2 days, 4 hours</small>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-warning btn-sm">
-                                        <i class="fas fa-eye me-1"></i>View Auction
-                                    </button>
-                                    <button class="btn btn-warning btn-sm">
-                                        <i class="fas fa-hand-paper me-1"></i>Place Bid
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 4 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge bg-secondary">
-                                    <i class="fas fa-clock me-1"></i>Pending
-                                </span>
-                                
-                                <h5 class="card-title">Kerala Backwaters Mangrove</h5>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Kerala Backwaters
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
-                                    <span class="impact-tag badge bg-info">Tourism</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag text-secondary">₹480/credit</div>
-                                        <small class="text-secondary">Est. Price</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-secondary">400 tCO2e</div>
-                                        <small class="text-secondary">Under Verification</small>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm">
-                                        <i class="fas fa-bell me-1"></i>Notify Me
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 5 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card blockchain-verified">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge bg-success">
-                                    <i class="fas fa-check-circle me-1"></i>Verified
-                                </span>
-                                
-                                <h5 class="card-title">Odisha Salt Marsh Conservation</h5>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Odisha Coast
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Biodiversity</span>
-                                    <span class="impact-tag badge bg-success">Livelihood</span>
-                                    <span class="impact-tag badge bg-info">Women-led</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag">₹495/credit</div>
-                                        <small class="text-secondary">600 credits available</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-success">300 tCO2e</div>
-                                        <small class="text-secondary">Verified</small>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 p-2 bg-dark rounded">
-                                    <small class="text-secondary d-block">Blockchain Verified</small>
-                                    <div class="transaction-hash">
-                                        0x9c4d...e72f
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 6 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card project-card blockchain-verified">
-                            <div class="card-body position-relative">
-                                <span class="verified-badge badge bg-success">
-                                    <i class="fas fa-check-circle me-1"></i>Premium
-                                </span>
-                                
-                                <h5 class="card-title">Lakshadweep Coral & Seagrass</h5>
-                                
-                                <p class="text-secondary small mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Lakshadweep Islands
-                                </p>
-                                
-                                <div class="mb-3">
-                                    <span class="impact-tag badge bg-primary">Marine Biodiversity</span>
-                                    <span class="impact-tag badge bg-danger">Coral Protection</span>
-                                    <span class="impact-tag badge bg-info">Eco-tourism</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <div class="price-tag">₹575/credit</div>
-                                        <small class="text-secondary">200 credits available</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-success">100 tCO2e</div>
-                                        <small class="text-secondary">Premium Verified</small>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 p-2 bg-dark rounded">
-                                    <small class="text-secondary d-block">Blockchain Verified</small>
-                                    <div class="transaction-hash">
-                                        0xa5b1...f83c
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>View Details
-                                    </button>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- No Results State -->
+                <div id="noResults" class="text-center py-5" style="display: none;">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4>No projects found</h4>
+                    <p class="text-muted">Try adjusting your filters or search terms</p>
+                    <button class="btn btn-primary" onclick="resetFilters()">Reset Filters</button>
                 </div>
 
                 <!-- Pagination -->
-                <nav class="mt-5">
+                <nav class="mt-5" id="paginationContainer">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
                             <a class="page-link" href="#">Previous</a>
@@ -556,34 +662,61 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Project</th>
-                                    <th>Credits</th>
-                                    <th>Price</th>
-                                    <th>Total</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cartItems">
-                                <!-- Cart items will be populated here -->
-                            </tbody>
-                        </table>
+                    <div id="emptyCart" class="text-center py-4">
+                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h5>Your cart is empty</h5>
+                        <p class="text-muted">Add carbon credits from projects to get started</p>
                     </div>
-                    <div class="text-end">
-                        <h5>Total: <span id="cartTotal">₹0</span></h5>
+                    <div id="cartContent" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Credits</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartItems">
+                                    <!-- Cart items will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-end">
+                            <h5>Total: <span id="cartTotal">₹0</span></h5>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
-                    <button type="button" class="btn btn-primary" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                    <button type="button" class="btn btn-primary" id="checkoutButton" onclick="proceedToCheckout()" disabled>Proceed to Checkout</button>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="footer">
+
+    <!-- Project Details Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModalTitle">Project Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="projectModalBody">
+                    <!-- Project details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="modalAddToCart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer bg-dark text-light py-5 mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -596,19 +729,19 @@
                 <div class="col-md-2">
                     <h6 class="text-primary">Quick Links</h6>
                     <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
-                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
-                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
-                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                        <li><a href="index.html" class="text-decoration-none text-light">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none text-light">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none text-light">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none text-light">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <h6 class="text-primary">Support</h6>
                     <ul class="list-unstyled">
-                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
-                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
-                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
-                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                        <li><a href="faq.html" class="text-decoration-none text-light">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none text-light">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none text-light">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none text-light">Resources</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -630,5 +763,1074 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Marketplace JavaScript - Enhanced Functionality with 18 Dummy Projects
+
+        // Project Data Structure
+        let projects = [
+            {
+                id: 1,
+                title: "Sundarbans Mangrove Phase 1",
+                location: "Sundarbans (WB)",
+                type: "mangrove",
+                verified: true,
+                price: 500,
+                credits: 500,
+                co2e: 250,
+                impacts: ["biodiversity", "livelihood", "women"],
+                transactionHash: "0x8a3f...c42b",
+                isAuction: false,
+                description: "Large-scale mangrove restoration project in the Sundarbans delta, supporting local biodiversity and creating sustainable livelihoods for coastal communities. This project has restored over 500 hectares of mangrove forests.",
+                images: ["mangrove1.jpg", "mangrove2.jpg", "mangrove3.jpg"],
+                verificationDate: "2024-01-15",
+                developer: "Sundarbans Conservation Trust",
+                rating: 4.8,
+                reviews: 42
+            },
+            {
+                id: 2,
+                title: "Goa Seagrass Restoration",
+                location: "Goa Coast",
+                type: "seagrass",
+                verified: true,
+                price: 525,
+                credits: 300,
+                co2e: 150,
+                impacts: ["biodiversity", "community"],
+                transactionHash: "0x7b2e...d91a",
+                isAuction: false,
+                description: "Seagrass meadow restoration along the Goa coastline, enhancing marine biodiversity and supporting local fishing communities. Project has improved water quality and fish stocks.",
+                images: ["seagrass1.jpg", "seagrass2.jpg"],
+                verificationDate: "2024-02-20",
+                developer: "Marine Ecology Foundation",
+                rating: 4.6,
+                reviews: 28
+            },
+            {
+                id: 3,
+                title: "Andaman Coastal Forest",
+                location: "Andaman & Nicobar",
+                type: "afforestation",
+                verified: true,
+                price: 550,
+                credits: 750,
+                co2e: 375,
+                impacts: ["biodiversity", "endangered"],
+                transactionHash: null,
+                isAuction: true,
+                auctionEnds: "2024-03-25",
+                description: "Coastal afforestation project protecting endangered species and restoring native forest ecosystems in the Andaman Islands. Home to several rare bird species.",
+                images: ["andaman1.jpg", "andaman2.jpg"],
+                verificationDate: "2024-01-10",
+                developer: "Island Conservation Society",
+                rating: 4.9,
+                reviews: 35
+            },
+            {
+                id: 4,
+                title: "Kerala Backwaters Mangrove",
+                location: "Kerala Backwaters",
+                type: "mangrove",
+                verified: false,
+                price: 480,
+                credits: 400,
+                co2e: 200,
+                impacts: ["biodiversity", "tourism"],
+                transactionHash: null,
+                isAuction: false,
+                description: "Mangrove conservation in Kerala's famous backwaters, combining ecological restoration with sustainable tourism development.",
+                images: ["kerala1.jpg", "kerala2.jpg"],
+                verificationDate: null,
+                developer: "Backwaters Eco Trust",
+                rating: 4.3,
+                reviews: 18
+            },
+            {
+                id: 5,
+                title: "Odisha Salt Marsh Conservation",
+                location: "Odisha Coast",
+                type: "wetland",
+                verified: true,
+                price: 495,
+                credits: 600,
+                co2e: 300,
+                impacts: ["biodiversity", "livelihood", "women"],
+                transactionHash: "0x9c4d...e72f",
+                isAuction: false,
+                description: "Salt marsh conservation project protecting coastal wetlands and empowering women-led conservation initiatives. Creates alternative income sources.",
+                images: ["odisha1.jpg", "odisha2.jpg"],
+                verificationDate: "2024-02-05",
+                developer: "Coastal Women's Collective",
+                rating: 4.7,
+                reviews: 31
+            },
+            {
+                id: 6,
+                title: "Lakshadweep Coral & Seagrass",
+                location: "Lakshadweep Islands",
+                type: "seagrass",
+                verified: true,
+                price: 575,
+                credits: 200,
+                co2e: 100,
+                impacts: ["marine-biodiversity", "coral", "eco-tourism"],
+                transactionHash: "0xa5b1...f83c",
+                isAuction: false,
+                description: "Premium coral reef and seagrass conservation project in the pristine Lakshadweep archipelago. Protects endangered marine species.",
+                images: ["lakshadweep1.jpg", "lakshadweep2.jpg"],
+                verificationDate: "2024-03-01",
+                developer: "Island Marine Research Center",
+                rating: 4.9,
+                reviews: 47
+            },
+            // Additional Dummy Projects
+            {
+                id: 7,
+                title: "Tamil Nadu Coastal Afforestation",
+                location: "Tamil Nadu Coast",
+                type: "afforestation",
+                verified: true,
+                price: 485,
+                credits: 800,
+                co2e: 400,
+                impacts: ["biodiversity", "coastal-protection", "community"],
+                transactionHash: "0xb2c3...d45e",
+                isAuction: false,
+                description: "Coastal afforestation project along Tamil Nadu's coastline, protecting villages from erosion and creating carbon sinks. Involves local schools in plantation drives.",
+                images: ["tn1.jpg", "tn2.jpg"],
+                verificationDate: "2024-01-28",
+                developer: "Coastal Green Initiative",
+                rating: 4.5,
+                reviews: 23
+            },
+            {
+                id: 8,
+                title: "Gujarat Mangrove Conservation",
+                location: "Gujarat Coast",
+                type: "mangrove",
+                verified: true,
+                price: 510,
+                credits: 450,
+                co2e: 225,
+                impacts: ["biodiversity", "livelihood", "climate-resilience"],
+                transactionHash: "0xc4d5...e67f",
+                isAuction: false,
+                description: "Mangrove conservation in the Gulf of Kutch, enhancing climate resilience for coastal communities and supporting artisanal fisheries.",
+                images: ["gujarat1.jpg", "gujarat2.jpg"],
+                verificationDate: "2024-02-14",
+                developer: "Gulf Conservation Society",
+                rating: 4.6,
+                reviews: 29
+            },
+            {
+                id: 9,
+                title: "Maharashtra Wetland Restoration",
+                location: "Maharashtra Coast",
+                type: "wetland",
+                verified: false,
+                price: 470,
+                credits: 350,
+                co2e: 175,
+                impacts: ["biodiversity", "water-security", "education"],
+                transactionHash: null,
+                isAuction: false,
+                description: "Urban wetland restoration near Mumbai, improving water security and serving as an educational site for environmental studies.",
+                images: ["mumbai1.jpg", "mumbai2.jpg"],
+                verificationDate: null,
+                developer: "Urban Ecology Network",
+                rating: 4.2,
+                reviews: 15
+            },
+            {
+                id: 10,
+                title: "Andhra Pradesh Seagrass Beds",
+                location: "Andhra Coast",
+                type: "seagrass",
+                verified: true,
+                price: 535,
+                credits: 280,
+                co2e: 140,
+                impacts: ["marine-biodiversity", "fisheries", "research"],
+                transactionHash: "0xd5e6...f78g",
+                isAuction: true,
+                auctionEnds: "2024-03-20",
+                description: "Seagrass bed conservation supporting dugong populations and sustainable fisheries. Research partnership with marine biology institutes.",
+                images: ["ap1.jpg", "ap2.jpg"],
+                verificationDate: "2024-02-08",
+                developer: "Marine Research Foundation",
+                rating: 4.7,
+                reviews: 33
+            },
+            {
+                id: 11,
+                title: "West Bengal Community Mangroves",
+                location: "Sundarbans (WB)",
+                type: "mangrove",
+                verified: true,
+                price: 495,
+                credits: 600,
+                co2e: 300,
+                impacts: ["community", "livelihood", "biodiversity", "women"],
+                transactionHash: "0xe6f7...g89h",
+                isAuction: false,
+                description: "Community-led mangrove restoration creating sustainable livelihoods through honey production and eco-tourism. Women-run cooperatives.",
+                images: ["wb1.jpg", "wb2.jpg"],
+                verificationDate: "2024-01-22",
+                developer: "Sundarbans Community Trust",
+                rating: 4.8,
+                reviews: 41
+            },
+            {
+                id: 12,
+                title: "Karnataka Coastal Biodiversity",
+                location: "Karnataka Coast",
+                type: "afforestation",
+                verified: true,
+                price: 520,
+                credits: 420,
+                co2e: 210,
+                impacts: ["biodiversity", "endangered", "research"],
+                transactionHash: "0xf7g8...h90i",
+                isAuction: false,
+                description: "Coastal forest restoration protecting endemic species and serving as a research site for coastal ecology studies.",
+                images: ["karnataka1.jpg", "karnataka2.jpg"],
+                verificationDate: "2024-03-05",
+                developer: "Western Ghats Conservation",
+                rating: 4.4,
+                reviews: 19
+            },
+            {
+                id: 13,
+                title: "Puducherry Mangrove Corridor",
+                location: "Puducherry Coast",
+                type: "mangrove",
+                verified: true,
+                price: 505,
+                credits: 320,
+                co2e: 160,
+                impacts: ["biodiversity", "urban-greening", "education"],
+                transactionHash: "0x8h9i...j01k",
+                isAuction: false,
+                description: "Urban mangrove corridor connecting fragmented habitats in Puducherry. Educational programs for schools and colleges.",
+                images: ["puducherry1.jpg", "puducherry2.jpg"],
+                verificationDate: "2024-02-18",
+                developer: "Puducherry Environmental Trust",
+                rating: 4.5,
+                reviews: 26
+            },
+            {
+                id: 14,
+                title: "Nicobar Island Forest",
+                location: "Andaman & Nicobar",
+                type: "afforestation",
+                verified: false,
+                price: 560,
+                credits: 550,
+                co2e: 275,
+                impacts: ["biodiversity", "indigenous", "conservation"],
+                transactionHash: null,
+                isAuction: false,
+                description: "Forest conservation in remote Nicobar islands, working with indigenous communities to protect ancient forest ecosystems.",
+                images: ["nicobar1.jpg", "nicobar2.jpg"],
+                verificationDate: null,
+                developer: "Island Heritage Foundation",
+                rating: 4.3,
+                reviews: 12
+            },
+            {
+                id: 15,
+                title: "Ratnagiri Seagrass Initiative",
+                location: "Maharashtra Coast",
+                type: "seagrass",
+                verified: true,
+                price: 515,
+                credits: 380,
+                co2e: 190,
+                impacts: ["marine-biodiversity", "fisheries", "community"],
+                transactionHash: "0x9i0j...k12l",
+                isAuction: true,
+                auctionEnds: "2024-03-28",
+                description: "Seagrass restoration supporting local fisheries and marine biodiversity along the Konkan coast. Community monitoring program.",
+                images: ["ratnagiri1.jpg", "ratnagiri2.jpg"],
+                verificationDate: "2024-02-25",
+                developer: "Konkan Coastal Alliance",
+                rating: 4.6,
+                reviews: 24
+            },
+            {
+                id: 16,
+                title: "Daman Wetland Park",
+                location: "Daman Coast",
+                type: "wetland",
+                verified: true,
+                price: 490,
+                credits: 270,
+                co2e: 135,
+                impacts: ["biodiversity", "recreation", "education"],
+                transactionHash: "0x0j1k...l23m",
+                isAuction: false,
+                description: "Urban wetland park creation providing recreational space while serving as carbon sink and biodiversity hotspot.",
+                images: ["daman1.jpg", "daman2.jpg"],
+                verificationDate: "2024-03-08",
+                developer: "Daman Urban Development",
+                rating: 4.7,
+                reviews: 30
+            },
+            {
+                id: 17,
+                title: "Diu Coastal Restoration",
+                location: "Diu Coast",
+                type: "mangrove",
+                verified: true,
+                price: 500,
+                credits: 190,
+                co2e: 95,
+                impacts: ["biodiversity", "tourism", "coastal-protection"],
+                transactionHash: "0x1k2l...m34n",
+                isAuction: false,
+                description: "Coastal ecosystem restoration in Diu, combining mangrove planting with beach nourishment for enhanced coastal protection.",
+                images: ["diu1.jpg", "diu2.jpg"],
+                verificationDate: "2024-01-30",
+                developer: "Diu Tourism Development",
+                rating: 4.4,
+                reviews: 21
+            },
+            {
+                id: 18,
+                title: "Premium Lakshadweep Coral",
+                location: "Lakshadweep Islands",
+                type: "seagrass",
+                verified: true,
+                price: 590,
+                credits: 150,
+                co2e: 75,
+                impacts: ["marine-biodiversity", "coral", "research", "premium"],
+                transactionHash: "0x2l3m...n45o",
+                isAuction: false,
+                description: "Premium coral conservation project with scientific research component. Highest verification standards and community benefits.",
+                images: ["lakshadweep3.jpg", "lakshadweep4.jpg"],
+                verificationDate: "2024-03-12",
+                developer: "Lakshadweep Marine Research",
+                rating: 4.9,
+                reviews: 38
+            }
+        ];
+
+        // Cart State
+        let cart = [];
+        let currentFilters = {
+            types: ['mangrove', 'seagrass'],
+            location: 'all',
+            verification: 'verified',
+            priceMin: 450,
+            priceMax: 600,
+            impacts: [],
+            searchTerm: '',
+            sortBy: 'newest'
+        };
+
+        // Initialize Marketplace
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMarketplace();
+        });
+
+        function initializeMarketplace() {
+            loadProjects();
+            setupEventListeners();
+            updateCartCount();
+            animateCounters();
+        }
+
+        function setupEventListeners() {
+            // Search input enter key
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProjects();
+                }
+            });
+
+            // Filter checkboxes
+            document.querySelectorAll('input[data-filter="type"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateTypeFilters);
+            });
+
+            document.querySelectorAll('input[data-filter="impact"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateImpactFilters);
+            });
+
+            // Price range inputs
+            document.getElementById('priceMin').addEventListener('change', updatePriceFilters);
+            document.getElementById('priceMax').addEventListener('change', updatePriceFilters);
+
+            // Location filter
+            document.getElementById('locationFilter').addEventListener('change', applyFilters);
+
+            // Verification radio buttons
+            document.querySelectorAll('input[name="verification"]').forEach(radio => {
+                radio.addEventListener('change', applyFilters);
+            });
+        }
+
+        function updateTypeFilters() {
+            const checkedTypes = Array.from(document.querySelectorAll('input[data-filter="type"]:checked'))
+                .map(input => input.value);
+            currentFilters.types = checkedTypes;
+            applyFilters();
+        }
+
+        function updateImpactFilters() {
+            const checkedImpacts = Array.from(document.querySelectorAll('input[data-filter="impact"]:checked'))
+                .map(input => input.value);
+            currentFilters.impacts = checkedImpacts;
+            applyFilters();
+        }
+
+        function updatePriceFilters() {
+            currentFilters.priceMin = parseInt(document.getElementById('priceMin').value) || 0;
+            currentFilters.priceMax = parseInt(document.getElementById('priceMax').value) || 1000;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            currentFilters.searchTerm = searchTerm;
+
+            const locationFilter = document.getElementById('locationFilter').value;
+            currentFilters.location = locationFilter;
+
+            const verificationFilter = document.querySelector('input[name="verification"]:checked').value;
+            currentFilters.verification = verificationFilter;
+
+            loadProjects();
+        }
+
+        function resetFilters() {
+            // Reset checkboxes
+            document.querySelectorAll('input[data-filter="type"]').forEach(checkbox => {
+                checkbox.checked = ['mangrove', 'seagrass'].includes(checkbox.value);
+            });
+
+            document.querySelectorAll('input[data-filter="impact"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Reset selects and inputs
+            document.getElementById('locationFilter').value = 'all';
+            document.getElementById('priceMin').value = 450;
+            document.getElementById('priceMax').value = 600;
+            document.getElementById('verified').checked = true;
+            document.getElementById('searchInput').value = '';
+
+            // Reset current filters
+            currentFilters = {
+                types: ['mangrove', 'seagrass'],
+                location: 'all',
+                verification: 'verified',
+                priceMin: 450,
+                priceMax: 600,
+                impacts: [],
+                searchTerm: '',
+                sortBy: 'newest'
+            };
+
+            applyFilters();
+        }
+
+        function searchProjects() {
+            applyFilters();
+        }
+
+        function sortProjects(sortType) {
+            currentFilters.sortBy = sortType;
+            
+            const sortButton = document.getElementById('sortButton');
+            let sortText = 'Sort by: ';
+            
+            switch(sortType) {
+                case 'price-low':
+                    sortText += 'Price: Low to High';
+                    break;
+                case 'price-high':
+                    sortText += 'Price: High to Low';
+                    break;
+                case 'newest':
+                    sortText += 'Verification Date';
+                    break;
+                case 'volume':
+                    sortText += 'Credit Volume';
+                    break;
+            }
+            
+            sortButton.textContent = sortText;
+            loadProjects();
+        }
+
+        function loadProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const loading = document.getElementById('loadingState');
+            const noResults = document.getElementById('noResults');
+            const projectCount = document.getElementById('projectCount');
+
+            // Show loading
+            grid.style.display = 'none';
+            loading.style.display = 'block';
+            noResults.style.display = 'none';
+
+            setTimeout(() => {
+                let filteredProjects = projects.filter(project => {
+                    // Type filter
+                    if (!currentFilters.types.includes(project.type)) return false;
+
+                    // Location filter
+                    if (currentFilters.location !== 'all') {
+                        const locationMap = {
+                            'sundarbans': 'Sundarbans (WB)',
+                            'andaman': 'Andaman & Nicobar',
+                            'lakshadweep': 'Lakshadweep Islands',
+                            'goa': 'Goa Coast',
+                            'kerala': 'Kerala Backwaters',
+                            'odisha': 'Odisha Coast',
+                            'tamil-nadu': 'Tamil Nadu Coast',
+                            'gujarat': 'Gujarat Coast',
+                            'maharashtra': 'Maharashtra Coast',
+                            'andhra': 'Andhra Coast',
+                            'karnataka': 'Karnataka Coast',
+                            'puducherry': 'Puducherry Coast',
+                            'daman': 'Daman Coast',
+                            'diu': 'Diu Coast'
+                        };
+                        if (project.location !== locationMap[currentFilters.location]) return false;
+                    }
+
+                    // Verification filter
+                    if (currentFilters.verification === 'verified' && !project.verified) return false;
+
+                    // Price filter
+                    if (project.price < currentFilters.priceMin || project.price > currentFilters.priceMax) return false;
+
+                    // Impact filter
+                    if (currentFilters.impacts.length > 0) {
+                        const hasMatchingImpact = currentFilters.impacts.some(impact => 
+                            project.impacts.includes(impact)
+                        );
+                        if (!hasMatchingImpact) return false;
+                    }
+
+                    // Search filter
+                    if (currentFilters.searchTerm) {
+                        const searchableText = `${project.title} ${project.location} ${project.description} ${project.developer}`.toLowerCase();
+                        if (!searchableText.includes(currentFilters.searchTerm)) return false;
+                    }
+
+                    return true;
+                });
+
+                // Sort projects
+                filteredProjects.sort((a, b) => {
+                    switch(currentFilters.sortBy) {
+                        case 'price-low':
+                            return a.price - b.price;
+                        case 'price-high':
+                            return b.price - a.price;
+                        case 'newest':
+                            return new Date(b.verificationDate) - new Date(a.verificationDate);
+                        case 'volume':
+                            return b.credits - a.credits;
+                        default:
+                            return 0;
+                    }
+                });
+
+                // Update project count
+                projectCount.textContent = `Showing ${filteredProjects.length} of ${projects.length} projects`;
+
+                // Render projects
+                if (filteredProjects.length === 0) {
+                    loading.style.display = 'none';
+                    noResults.style.display = 'block';
+                } else {
+                    renderProjects(filteredProjects);
+                    loading.style.display = 'none';
+                    grid.style.display = 'flex';
+                }
+            }, 500); // Simulate loading delay
+        }
+
+        function renderProjects(projectsToRender) {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+
+            projectsToRender.forEach(project => {
+                const projectCard = createProjectCard(project);
+                grid.appendChild(projectCard);
+            });
+        }
+
+        function createProjectCard(project) {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4 fade-in';
+
+            const statusBadge = project.verified ? 
+                `<span class="verified-badge badge bg-success">
+                    <i class="fas fa-check-circle me-1"></i>Verified
+                </span>` :
+                `<span class="verified-badge badge bg-secondary">
+                    <i class="fas fa-clock me-1"></i>Pending
+                </span>`;
+
+            const auctionBadge = project.isAuction ? 
+                `<span class="verified-badge badge auction-badge">
+                    <i class="fas fa-gavel me-1"></i>Live Auction
+                </span>` : '';
+
+            const blockchainSection = project.transactionHash ? 
+                `<div class="mb-3 p-2 bg-dark rounded">
+                    <small class="text-secondary d-block">Blockchain Verified</small>
+                    <div class="transaction-hash">${project.transactionHash}</div>
+                </div>` : '';
+
+            const auctionSection = project.isAuction ? 
+                `<div class="mb-3">
+                    <div class="progress mb-2">
+                        <div class="progress-bar progress-bar-auction" style="width: ${Math.random() * 30 + 40}%"></div>
+                    </div>
+                    <small class="text-secondary">Auction ends in ${Math.floor(Math.random() * 5) + 1} days, ${Math.floor(Math.random() * 24)} hours</small>
+                </div>` : '';
+
+            const buttons = project.isAuction ? 
+                `<div class="d-grid gap-2">
+                    <button class="btn btn-outline-warning btn-sm" onclick="viewProjectDetails(${project.id})">
+                        <i class="fas fa-eye me-1"></i>View Auction
+                    </button>
+                    <button class="btn btn-warning btn-sm" onclick="placeBid(${project.id})">
+                        <i class="fas fa-hand-paper me-1"></i>Place Bid
+                    </button>
+                </div>` :
+                `<div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="viewProjectDetails(${project.id})">
+                        <i class="fas fa-eye me-1"></i>View Details
+                    </button>
+                    <button class="btn btn-success btn-sm" onclick="addToCart(${project.id})">
+                        <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                    </button>
+                </div>`;
+
+            const impactTags = project.impacts.map(impact => {
+                const impactClasses = {
+                    'biodiversity': 'bg-primary',
+                    'livelihood': 'bg-success',
+                    'women': 'bg-info',
+                    'community': 'bg-warning',
+                    'endangered': 'bg-success',
+                    'marine-biodiversity': 'bg-primary',
+                    'coral': 'bg-danger',
+                    'eco-tourism': 'bg-info',
+                    'tourism': 'bg-info',
+                    'coastal-protection': 'bg-warning',
+                    'climate-resilience': 'bg-info',
+                    'water-security': 'bg-primary',
+                    'education': 'bg-secondary',
+                    'fisheries': 'bg-success',
+                    'research': 'bg-info',
+                    'indigenous': 'bg-warning',
+                    'conservation': 'bg-success',
+                    'recreation': 'bg-info',
+                    'urban-greening': 'bg-success',
+                    'premium': 'bg-danger'
+                };
+                const displayName = impact.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return `<span class="impact-tag badge ${impactClasses[impact] || 'bg-secondary'}">${displayName}</span>`;
+            }).join('');
+
+            // Rating stars
+            const ratingStars = '★'.repeat(Math.floor(project.rating)) + '☆'.repeat(5 - Math.floor(project.rating));
+
+            col.innerHTML = `
+                <div class="card project-card ${project.transactionHash ? 'blockchain-verified' : ''} ${project.isAuction ? 'border-warning' : ''}">
+                    <div class="card-body position-relative">
+                        ${statusBadge}
+                        ${auctionBadge}
+                        
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title">${project.title}</h5>
+                        </div>
+                        
+                        <p class="text-secondary small mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i>${project.location}
+                        </p>
+                        
+                        <div class="mb-2">
+                            <span class="text-warning small">${ratingStars}</span>
+                            <small class="text-muted"> (${project.rating}) • ${project.reviews} reviews</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            ${impactTags}
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="price-tag">₹${project.price}/credit</div>
+                                <small class="text-secondary">${project.credits.toLocaleString()} credits available</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold text-success">${project.co2e} tCO2e</div>
+                                <small class="text-secondary">${project.verified ? 'Verified' : 'Under Verification'}</small>
+                            </div>
+                        </div>
+
+                        ${blockchainSection}
+                        ${auctionSection}
+
+                        ${buttons}
+                    </div>
+                </div>
+            `;
+
+            return col;
+        }
+
+        // Cart Functionality
+        function addToCart(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+
+            const existingItem = cart.find(item => item.projectId === projectId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    projectId: project.id,
+                    title: project.title,
+                    price: project.price,
+                    quantity: 1,
+                    credits: project.credits
+                });
+            }
+
+            updateCartCount();
+            updateCartModal();
+            showNotification(`${project.title} added to cart`, 'success');
+        }
+
+        function removeFromCart(projectId) {
+            cart = cart.filter(item => item.projectId !== projectId);
+            updateCartCount();
+            updateCartModal();
+            showNotification('Item removed from cart', 'info');
+        }
+
+        function updateCartQuantity(projectId, change) {
+            const item = cart.find(item => item.projectId === projectId);
+            if (!item) return;
+
+            item.quantity += change;
+            
+            if (item.quantity <= 0) {
+                removeFromCart(projectId);
+            } else {
+                updateCartCount();
+                updateCartModal();
+            }
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        function toggleCartModal() {
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            updateCartModal();
+            cartModal.show();
+        }
+
+        function updateCartModal() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartContent = document.getElementById('cartContent');
+            const checkoutButton = document.getElementById('checkoutButton');
+
+            if (cart.length === 0) {
+                emptyCart.style.display = 'block';
+                cartContent.style.display = 'none';
+                checkoutButton.disabled = true;
+            } else {
+                emptyCart.style.display = 'none';
+                cartContent.style.display = 'block';
+                checkoutButton.disabled = false;
+
+                let total = 0;
+                cartItems.innerHTML = '';
+
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+
+                    const row = document.createElement('tr');
+                    row.className = 'cart-item';
+                    row.innerHTML = `
+                        <td>${item.title}</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateCartQuantity(${item.projectId}, -1)">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" 
+                                       onchange="setCartQuantity(${item.projectId}, this.value)">
+                                <button class="quantity-btn" onclick="updateCartQuantity(${item.projectId}, 1)">+</button>
+                            </div>
+                        </td>
+                        <td>₹${item.price}</td>
+                        <td>₹${itemTotal}</td>
+                        <td>
+                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart(${item.projectId})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    cartItems.appendChild(row);
+                });
+
+                cartTotal.textContent = `₹${total}`;
+            }
+        }
+
+        function setCartQuantity(projectId, quantity) {
+            const item = cart.find(item => item.projectId === projectId);
+            if (!item) return;
+
+            const newQuantity = parseInt(quantity);
+            if (newQuantity > 0) {
+                item.quantity = newQuantity;
+                updateCartCount();
+                updateCartModal();
+            }
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty', 'error');
+                return;
+            }
+
+            showNotification('Proceeding to checkout...', 'info');
+            // In a real application, this would redirect to a checkout page
+            setTimeout(() => {
+                const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+                cartModal.hide();
+                showNotification('Checkout completed successfully!', 'success');
+                cart = [];
+                updateCartCount();
+            }, 2000);
+        }
+
+        // Project Details Modal
+        function viewProjectDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+
+            const modalTitle = document.getElementById('projectModalTitle');
+            const modalBody = document.getElementById('projectModalBody');
+            const addToCartBtn = document.getElementById('modalAddToCart');
+
+            modalTitle.textContent = project.title;
+
+            const impactTags = project.impacts.map(impact => {
+                const displayName = impact.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return `<span class="impact-tag badge bg-primary me-1 mb-1">${displayName}</span>`;
+            }).join('');
+
+            const ratingStars = '★'.repeat(Math.floor(project.rating)) + '☆'.repeat(5 - Math.floor(project.rating));
+
+            modalBody.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-info-circle me-2"></i>Project Details</h6>
+                            <p>${project.description}</p>
+                        </div>
+
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-map-marker-alt me-2"></i>Location</h6>
+                            <p>${project.location}</p>
+                        </div>
+
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-tags me-2"></i>Impact Areas</h6>
+                            <div>${impactTags}</div>
+                        </div>
+
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-star me-2"></i>Ratings & Reviews</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="text-warning fs-5">${ratingStars}</span>
+                                <span class="ms-2 fw-bold">${project.rating}/5</span>
+                            </div>
+                            <small class="text-muted">Based on ${project.reviews} verified reviews</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-chart-bar me-2"></i>Carbon Metrics</h6>
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="fw-bold text-primary fs-4">${project.credits.toLocaleString()}</div>
+                                    <small class="text-secondary">Credits Available</small>
+                                </div>
+                                <div class="col-6">
+                                    <div class="fw-bold text-success fs-4">${project.co2e}</div>
+                                    <small class="text-secondary">tCO2e Verified</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-indian-rupee-sign me-2"></i>Pricing</h6>
+                            <div class="fw-bold text-primary fs-3">₹${project.price}/credit</div>
+                            <small class="text-secondary">Current market price</small>
+                        </div>
+
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-building me-2"></i>Developer</h6>
+                            <p class="fw-semibold">${project.developer}</p>
+                            <small class="text-muted">Verified partner since ${project.verificationDate ? new Date(project.verificationDate).getFullYear() : 'N/A'}</small>
+                        </div>
+
+                        ${project.transactionHash ? `
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-link me-2"></i>Blockchain Verification</h6>
+                            <div class="transaction-hash bg-dark p-2 rounded">${project.transactionHash}</div>
+                            <small class="text-secondary">Transaction hash on blockchain</small>
+                        </div>
+                        ` : ''}
+
+                        ${project.isAuction ? `
+                        <div class="project-detail-section">
+                            <h6><i class="fas fa-gavel me-2"></i>Auction Details</h6>
+                            <div class="alert alert-warning">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Live Auction</strong> - Ends in ${Math.floor(Math.random() * 5) + 1} days
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                ${project.images ? `
+                <div class="project-detail-section">
+                    <h6><i class="fas fa-images me-2"></i>Project Gallery</h6>
+                    <div class="project-gallery">
+                        ${project.images.map(img => 
+                            `<img src="assets/projects/${img}" alt="Project Image" class="project-image" onclick="viewImage('assets/projects/${img}')">`
+                        ).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            if (project.isAuction) {
+                addToCartBtn.innerHTML = '<i class="fas fa-gavel me-1"></i>Place Bid';
+                addToCartBtn.className = 'btn btn-warning';
+                addToCartBtn.onclick = function() { placeBid(projectId); };
+            } else {
+                addToCartBtn.innerHTML = '<i class="fas fa-shopping-cart me-1"></i>Add to Cart';
+                addToCartBtn.className = 'btn btn-success';
+                addToCartBtn.onclick = function() { 
+                    addToCart(projectId);
+                    const projectModal = bootstrap.Modal.getInstance(document.getElementById('projectModal'));
+                    projectModal.hide();
+                };
+            }
+
+            const projectModal = new bootstrap.Modal(document.getElementById('projectModal'));
+            projectModal.show();
+        }
+
+        function placeBid(projectId) {
+            showNotification('Bid placement feature coming soon!', 'info');
+        }
+
+        function viewImage(src) {
+            // Simple image viewer - in a real app, you might use a lightbox library
+            window.open(src, '_blank');
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icons = {
+                success: 'check-circle',
+                error: 'exclamation-circle',
+                info: 'info-circle',
+                warning: 'exclamation-triangle'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${icons[type]}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        // Counter Animation
+        function animateCounters() {
+            const totalCredits = projects.reduce((sum, project) => sum + project.credits, 0);
+            
+            const counters = [
+                { element: 'creditsAvailable', target: totalCredits },
+                { element: 'activeProjects', target: projects.length },
+                { element: 'verifiedSellers', target: Math.floor(projects.length * 0.7) }, // 70% verified
+                { element: 'corporateBuyers', target: Math.floor(projects.length * 0.6) }  // 60% corporate buyers
+            ];
+
+            counters.forEach((counter, index) => {
+                setTimeout(() => {
+                    animateCounter(document.getElementById(counter.element), counter.target);
+                }, index * 200);
+            });
+        }
+
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        }
+
+        // Initialize when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeMarketplace);
+        } else {
+            initializeMarketplace();
+        }
+    </script>
 </body>
 </html>

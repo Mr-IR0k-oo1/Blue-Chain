@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BlueCarbon India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Admin Header -->
+    <nav class="navbar navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>
+                BlueCarbon India <span class="badge bg-warning">Admin</span>
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown me-3">
+                    <button class="btn btn-outline-light position-relative" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">Admin Notifications</h6>
+                        <a class="dropdown-item" href="#">
+                            <div class="text-warning">⚠️ 12 projects pending verification</div>
+                            <small>2 hours ago</small>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="text-success">✅ 5 new corporate registrations</div>
+                            <small>4 hours ago</small>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div>💰 ₹25L transactions processed</div>
+                            <small>1 day ago</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2" 
+                                 style="width: 32px; height: 32px;">
+                                <i class="fas fa-user-shield text-white"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="small fw-bold">NCCR Admin</div>
+                                <div class="small text-secondary">Super Administrator</div>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><h6 class="dropdown-header">NCCR Administrator</h6></li>
+                        <li><a class="dropdown-item" href="#profile"><i class="fas fa-user me-2"></i>Admin Profile</a></li>
+                        <li><a class="dropdown-item" href="#settings"><i class="fas fa-cog me-2"></i>System Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="login.html">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <nav class="nav flex-column p-3">
+                    <a class="nav-link active" href="#overview">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link" href="#users">
+                        <i class="fas fa-users me-2"></i>User Management
+                        <span class="badge bg-primary ms-2">8</span>
+                    </a>
+                    <a class="nav-link" href="#projects">
+                        <i class="fas fa-project-diagram me-2"></i>Projects
+                        <span class="badge bg-warning ms-2">12</span>
+                    </a>
+                    <a class="nav-link" href="#verification">
+                        <i class="fas fa-shield-alt me-2"></i>Verification Portal
+                        <span class="notification-badge">3</span>
+                    </a>
+                    <a class="nav-link" href="#transactions">
+                        <i class="fas fa-exchange-alt me-2"></i>Transactions
+                    </a>
+                    <a class="nav-link" href="#reports">
+                        <i class="fas fa-chart-bar me-2"></i>Reports & Analytics
+                    </a>
+                    <a class="nav-link" href="#blockchain">
+                        <i class="fas fa-link me-2"></i>Blockchain Monitor
+                    </a>
+                    <a class="nav-link" href="#compliance">
+                        <i class="fas fa-gavel me-2"></i>Compliance
+                    </a>
+                    <div class="mt-3 pt-3 border-top">
+                        <a class="nav-link" href="#system">
+                            <i class="fas fa-server me-2"></i>System Health
+                        </a>
+                        <a class="nav-link" href="#audit">
+                            <i class="fas fa-clipboard-list me-2"></i>Audit Logs
+                        </a>
+                        <a class="nav-link" href="#settings">
+                            <i class="fas fa-cogs me-2"></i>Settings
+                        </a>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-4">
+                <!-- Quick Stats -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card text-white bg-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3>127</h3>
+                                        <p>Total Projects</p>
+                                        <small class="opacity-75">+8 this month</small>
+                                    </div>
+                                    <i class="fas fa-project-diagram fa-2x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card text-white bg-success">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3>45,620</h3>
+                                        <p>Total Credits</p>
+                                        <small class="opacity-75">+2,150 this week</small>
+                                    </div>
+                                    <i class="fas fa-leaf fa-2x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card text-white bg-warning">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3>12</h3>
+                                        <p>Pending Verification</p>
+                                        <small class="opacity-75">Urgent: 3 projects</small>
+                                    </div>
+                                    <i class="fas fa-clock fa-2x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card text-white bg-info">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3>₹2.3Cr</h3>
+                                        <p>Total Revenue</p>
+                                        <small class="opacity-75">+₹25L this month</small>
+                                    </div>
+                                    <i class="fas fa-rupee-sign fa-2x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-8">
+                        <!-- Pending Verifications -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-clock me-2"></i>Pending Verifications
+                                </h5>
+                                <span class="badge bg-dark text-warning">12 Projects</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Project ID</th>
+                                                <th>Project Name</th>
+                                                <th>Type</th>
+                                                <th>Submitted</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="verification-pending">
+                                                <td>#BC2024-001</td>
+                                                <td>
+                                                    <strong>Sundarbans Mangrove Phase 2</strong>
+                                                    <br><small class="text-secondary">Coastal Panchayat Sundarbans</small>
+                                                </td>
+                                                <td>Mangrove</td>
+                                                <td>2 days ago</td>
+                                                <td><span class="badge bg-warning">Under Review</span></td>
+                                                <td class="table-actions">
+                                                    <button class="btn btn-sm btn-outline-primary" onclick="reviewProject('BC2024-001')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" onclick="approveProject('BC2024-001')">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" onclick="rejectProject('BC2024-001')">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="verification-pending">
+                                                <td>#BC2024-002</td>
+                                                <td>
+                                                    <strong>Goa Seagrass Restoration</strong>
+                                                    <br><small class="text-secondary">EcoNGO Foundation</small>
+                                                </td>
+                                                <td>Seagrass</td>
+                                                <td>1 day ago</td>
+                                                <td><span class="badge bg-warning">Documents Pending</span></td>
+                                                <td class="table-actions">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-info">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="verification-pending">
+                                                <td>#BC2024-003</td>
+                                                <td>
+                                                    <strong>Andaman Coastal Forest</strong>
+                                                    <br><small class="text-secondary">Island Conservation Trust</small>
+                                                </td>
+                                                <td>Afforestation</td>
+                                                <td>5 hours ago</td>
+                                                <td><span class="badge bg-warning">New Submission</span></td>
+                                                <td class="table-actions">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-outline-warning" onclick="viewAllPending()">
+                                        View All 12 Pending Verifications
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-exchange-alt me-2"></i>Recent Transactions
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Tx Hash</th>
+                                                <th>Buyer</th>
+                                                <th>Seller</th>
+                                                <th>Credits</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Timestamp</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <small class="font-monospace">0x8a3f...c42b</small>
+                                                    <br><small class="text-secondary">Block #192837</small>
+                                                </td>
+                                                <td>GreenTech Solutions</td>
+                                                <td>Coastal Panchayat Sundarbans</td>
+                                                <td>250 tCO2e</td>
+                                                <td>₹1,25,000</td>
+                                                <td><span class="badge bg-success">Confirmed</span></td>
+                                                <td>2 hours ago</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <small class="font-monospace">0x7b2e...d91a</small>
+                                                    <br><small class="text-secondary">Block #192836</small>
+                                                </td>
+                                                <td>EcoManufacturing Ltd</td>
+                                                <td>EcoNGO Foundation</td>
+                                                <td>150 tCO2e</td>
+                                                <td>₹78,750</td>
+                                                <td><span class="badge bg-success">Confirmed</span></td>
+                                                <td>4 hours ago</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <small class="font-monospace">0x9c4d...e72f</small>
+                                                    <br><small class="text-secondary">Block #192835</small>
+                                                </td>
+                                                <td>Sustainable Corp</td>
+                                                <td>Island Conservation Trust</td>
+                                                <td>300 tCO2e</td>
+                                                <td>₹1,50,000</td>
+                                                <td><span class="badge bg-warning">Pending</span></td>
+                                                <td>6 hours ago</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-4">
+                        <!-- System Health -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-server me-2"></i>System Health
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label>Blockchain Network</label>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-success" style="width: 95%">95%</div>
+                                    </div>
+                                    <small class="text-secondary">Last block: #192837</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label>Database Performance</label>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-info" style="width: 88%">88%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label>API Response Time</label>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-warning" style="width: 92%">92%</div>
+                                    </div>
+                                    <small class="text-secondary">Average: 120ms</small>
+                                </div>
+
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    All systems operational
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-bolt me-2"></i>Quick Actions
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary" onclick="generateReport()">
+                                        <i class="fas fa-file-pdf me-2"></i>Generate Monthly Report
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="manageUsers()">
+                                        <i class="fas fa-users me-2"></i>User Management
+                                    </button>
+                                    <button class="btn btn-outline-warning" onclick="verifyProjects()">
+                                        <i class="fas fa-shield-alt me-2"></i>Bulk Verification
+                                    </button>
+                                    <button class="btn btn-outline-info" onclick="systemSettings()">
+                                        <i class="fas fa-cogs me-2"></i>System Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-history me-2"></i>Recent Activity
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-timeline">
+                                    <div class="timeline-item">
+                                        <div class="text-success">✅ Project BC2024-015 approved</div>
+                                        <small class="text-secondary">Admin: Rajesh Kumar | 30 mins ago</small>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="text-primary">👥 New corporate registration: GreenTech</div>
+                                        <small class="text-secondary">2 hours ago</small>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="text-warning">⚠️ Verification requested: BC2024-016</div>
+                                        <small class="text-secondary">3 hours ago</small>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="text-info">💰 Large transaction: ₹2,50,000</div>
+                                        <small class="text-secondary">5 hours ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Preview -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users me-2"></i>Recent User Registrations
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <div class="card border-primary">
+                                    <div class="card-body">
+                                        <i class="fas fa-building fa-2x text-primary mb-2"></i>
+                                        <h5>8</h5>
+                                        <p>Corporate Users</p>
+                                        <small class="text-secondary">+2 this week</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="card border-success">
+                                    <div class="card-body">
+                                        <i class="fas fa-users fa-2x text-success mb-2"></i>
+                                        <h5>45</h5>
+                                        <p>Farmers/Panchayats</p>
+                                        <small class="text-secondary">+5 this week</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <i class="fas fa-hands-helping fa-2x text-info mb-2"></i>
+                                        <h5>12</h5>
+                                        <p>NGO Partners</p>
+                                        <small class="text-secondary">+1 this week</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="card border-warning">
+                                    <div class="card-body">
+                                        <i class="fas fa-user-shield fa-2x text-warning mb-2"></i>
+                                        <h5>3</h5>
+                                        <p>Verifiers</p>
+                                        <small class="text-secondary">Active</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Review Modal -->
+    <div class="modal fade" id="projectReviewModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Project Review - <span id="projectTitle"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Project Details</h6>
+                            <table class="table table-bordered">
+                                <tr><th>Project ID:</th><td id="projectId"></td></tr>
+                                <tr><th>Project Type:</th><td id="projectType"></td></tr>
+                                <tr><th>Location:</th><td id="projectLocation"></td></tr>
+                                <tr><th>Area:</th><td id="projectArea"></td></tr>
+                                <tr><th>Estimated Credits:</th><td id="projectCredits"></td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Verification Documents</h6>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    Land Ownership Documents
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-file-image me-2 text-success"></i>
+                                    Geotagged Photos
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-file-contract me-2 text-primary"></i>
+                                    Project Proposal
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label for="verificationNotes" class="form-label">Verification Notes</label>
+                        <textarea class="form-control" id="verificationNotes" rows="3" placeholder="Add verification comments..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="rejectProject()">Reject</button>
+                    <button type="button" class="btn btn-success" onclick="approveProject()">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-leaf me-2"></i>
+                        BlueCarbon India
+                    </h5>
+                    <p class="text-secondary">Ministry of Earth Sciences Initiative for Sustainable Coastal Ecosystem Management</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-primary">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-decoration-none">Home</a></li>
+                        <li><a href="marketplace.html" class="text-decoration-none">Marketplace</a></li>
+                        <li><a href="about.html" class="text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li><a href="terms.html" class="text-decoration-none">Terms</a></li>
+                        <li><a href="privacy.html" class="text-decoration-none">Privacy</a></li>
+                        <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-primary">Contact</h6>
+                    <ul class="list-unstyled text-secondary">
+                        <li><i class="fas fa-envelope me-2"></i>mocarbon@moes.gov.in</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <small>&copy; 2024 BlueCarbon India. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Blockchain-Powered Carbon Credit Platform | ISO 14064 Certified</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -5,105 +5,593 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blue Carbon Credit Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for the calculator page */
+        .calculator-header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .calculator-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .calculator-header h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .calculator-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section, .results-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-normal);
+        }
+        
+        .input-section:hover, .results-section:hover {
+            box-shadow: var(--shadow-card-hover);
+            border-color: var(--accent-primary);
+        }
+        
+        .input-section h2, .results-section h2 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .input-group select, .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-normal);
+        }
+        
+        .input-group select:focus, .input-group input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+            outline: none;
+        }
+        
+        .calculate-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 15px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-card-hover);
+        }
+        
+        .result-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-primary);
+            transition: var(--transition-normal);
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .result-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            line-height: 1;
+        }
+        
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .result-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+        
+        .breakdown {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .breakdown h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-item span:first-child {
+            color: var(--text-secondary);
+        }
+        
+        .breakdown-item span:last-child {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-normal);
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card-hover);
+            border-color: var(--accent-primary);
+        }
+        
+        .info-card h3 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .ecosystem-info {
+            margin-top: 25px;
+        }
+        
+        .ecosystem-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .ecosystem-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ecosystem-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+        }
+        
+        .ecosystem-details h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .ecosystem-details p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .info-card ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .info-card li {
+            margin-bottom: 8px;
+        }
+        
+        .visualization {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-card);
+        }
+        
+        .visualization h2 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .comparison-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-card);
+        }
+        
+        .comparison-section h2 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .comparison-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition-normal);
+        }
+        
+        .comparison-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .comparison-icon {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+        }
+        
+        .comparison-item h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-item p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .footer {
+            margin-top: 60px;
+        }
+        
+        .savings-highlight {
+            background: var(--gradient-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-success);
+        }
+        
+        .savings-highlight h4 {
+            color: var(--accent-success);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .savings-highlight p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        /* Animation for results */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        /* Tooltip styles */
+        .tooltip-icon {
+            color: var(--accent-info);
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        /* Print styles */
+        @media print {
+            .calculate-btn, .tooltip-icon {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-leaf"></i> Blue Carbon Credit Calculator</h1>
-            <p>Estimate carbon sequestration and credit generation for coastal ecosystem restoration projects</p>
-        </header>
+    <!-- Enhanced Header -->
+    <div class="calculator-header">
+        <div class="container">
+            <h1><i class="fas fa-calculator"></i> Blue Carbon Credit Calculator</h1>
+            <p>Estimate carbon sequestration and credit generation for coastal ecosystem restoration projects using our advanced calculation tool</p>
+        </div>
+    </div>
 
-        <div class="card">
-            <div class="calculator-container">
-                <div class="input-section">
-                    <h2><i class="fas fa-calculator"></i> Project Details</h2>
-                    
-                    <div class="input-group">
-                        <label for="ecosystem-type">Ecosystem Type</label>
-                        <select id="ecosystem-type">
-                            <option value="mangrove">Mangrove Forest</option>
-                            <option value="seagrass">Seagrass Meadow</option>
-                            <option value="saltmarsh">Salt Marsh</option>
-                            <option value="other">Other Coastal Vegetation</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="area">Project Area (hectares)</label>
-                        <input type="number" id="area" min="0" step="0.1" placeholder="Enter area in hectares">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="duration">Project Duration (years)</label>
-                        <input type="number" id="duration" min="1" max="50" value="10">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="location">Geographic Location</label>
-                        <select id="location">
-                            <option value="east">East Coast</option>
-                            <option value="west">West Coast</option>
-                            <option value="islands">Islands</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="previous-land-use">Previous Land Use</label>
-                        <select id="previous-land-use">
-                            <option value="degraded">Degraded Land</option>
-                            <option value="aquaculture">Aquaculture Pond</option>
-                            <option value="agriculture">Agricultural Land</option>
-                            <option value="barren">Barren Land</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <button class="calculate-btn" id="calculate-btn">
-                        <i class="fas fa-calculator"></i> Calculate Carbon Credits
-                    </button>
+    <div class="container">
+        <!-- Calculator Container -->
+        <div class="calculator-container">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2><i class="fas fa-calculator"></i> Project Details</h2>
+                
+                <div class="input-group">
+                    <label for="ecosystem-type">Ecosystem Type <i class="fas fa-info-circle tooltip-icon" title="Select the type of coastal ecosystem for your project"></i></label>
+                    <select id="ecosystem-type">
+                        <option value="mangrove">Mangrove Forest</option>
+                        <option value="seagrass">Seagrass Meadow</option>
+                        <option value="saltmarsh">Salt Marsh</option>
+                        <option value="other">Other Coastal Vegetation</option>
+                    </select>
                 </div>
                 
-                <div class="results-section">
-                    <h2><i class="fas fa-chart-line"></i> Results</h2>
-                    
-                    <div class="result-card">
-                        <h3>Estimated Carbon Sequestration</h3>
-                        <div class="result-value" id="total-sequestration">0 <span class="result-unit">tCO₂e</span></div>
+                <div class="input-group">
+                    <label for="area">Project Area (hectares) <i class="fas fa-info-circle tooltip-icon" title="Enter the total area of your restoration project in hectares"></i></label>
+                    <input type="number" id="area" min="0" step="0.1" placeholder="Enter area in hectares">
+                </div>
+                
+                <div class="input-group">
+                    <label for="duration">Project Duration (years) <i class="fas fa-info-circle tooltip-icon" title="Select the duration of your carbon credit project"></i></label>
+                    <input type="number" id="duration" min="1" max="50" value="10">
+                </div>
+                
+                <div class="input-group">
+                    <label for="location">Geographic Location <i class="fas fa-info-circle tooltip-icon" title="Select the coastal region where your project is located"></i></label>
+                    <select id="location">
+                        <option value="east">East Coast</option>
+                        <option value="west">West Coast</option>
+                        <option value="islands">Islands</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="previous-land-use">Previous Land Use <i class="fas fa-info-circle tooltip-icon" title="Select the previous land use to estimate baseline emissions"></i></label>
+                    <select id="previous-land-use">
+                        <option value="degraded">Degraded Land</option>
+                        <option value="aquaculture">Aquaculture Pond</option>
+                        <option value="agriculture">Agricultural Land</option>
+                        <option value="barren">Barren Land</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="carbon-price">Carbon Credit Price (₹/credit) <i class="fas fa-info-circle tooltip-icon" title="Current market price for carbon credits"></i></label>
+                    <input type="number" id="carbon-price" min="500" max="5000" value="1500" step="50">
+                </div>
+                
+                <button class="calculate-btn" id="calculate-btn">
+                    <i class="fas fa-calculator"></i> Calculate Carbon Credits
+                </button>
+                
+                <div class="savings-highlight">
+                    <h4><i class="fas fa-leaf"></i> Environmental Impact</h4>
+                    <p>Your project could sequester carbon equivalent to taking <span id="cars-equivalent">0</span> cars off the road annually</p>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-section">
+                <h2><i class="fas fa-chart-line"></i> Project Results</h2>
+                
+                <div class="result-card">
+                    <h3>Estimated Carbon Sequestration</h3>
+                    <div class="result-value" id="total-sequestration">0 <span class="result-unit">tCO₂e</span></div>
+                    <p>Total carbon dioxide equivalent sequestered over project lifetime</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Potential Carbon Credits</h3>
+                    <div class="result-value" id="total-credits">0 <span class="result-unit">credits</span></div>
+                    <p>1 credit = 1 tonne of CO₂ equivalent</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Estimated Project Value</h3>
+                    <div class="result-value" id="annual-value">₹0 <span class="result-unit">total</span></div>
+                    <p>Based on current market rates over project duration</p>
+                </div>
+                
+                <div class="breakdown">
+                    <h3>Annual Breakdown</h3>
+                    <div class="breakdown-item">
+                        <span>Carbon Sequestration:</span>
+                        <span id="annual-sequestration">0 tCO₂e/year</span>
                     </div>
-                    
-                    <div class="result-card">
-                        <h3>Potential Carbon Credits</h3>
-                        <div class="result-value" id="total-credits">0 <span class="result-unit">credits</span></div>
-                        <p>1 credit = 1 tonne of CO₂ equivalent</p>
+                    <div class="breakdown-item">
+                        <span>Carbon Credits:</span>
+                        <span id="annual-credits">0 credits/year</span>
                     </div>
-                    
-                    <div class="result-card">
-                        <h3>Estimated Annual Value</h3>
-                        <div class="result-value" id="annual-value">₹0 <span class="result-unit">/year</span></div>
-                        <p>Based on current market rates</p>
-                    </div>
-                    
-                    <div class="breakdown">
-                        <h3>Annual Breakdown</h3>
-                        <div class="breakdown-item">
-                            <span>Carbon Sequestration:</span>
-                            <span id="annual-sequestration">0 tCO₂e/year</span>
-                        </div>
-                        <div class="breakdown-item">
-                            <span>Carbon Credits:</span>
-                            <span id="annual-credits">0 credits/year</span>
-                        </div>
-                        <div class="breakdown-item">
-                            <span>Estimated Revenue:</span>
-                            <span id="annual-revenue">₹0/year</span>
-                        </div>
+                    <div class="breakdown-item">
+                        <span>Estimated Revenue:</span>
+                        <span id="annual-revenue">₹0/year</span>
                     </div>
                 </div>
             </div>
         </div>
         
+        <!-- Visualization Section -->
+        <div class="visualization">
+            <h2><i class="fas fa-chart-bar"></i> Projection Visualization</h2>
+            <p>Visual representation of carbon sequestration over the project duration</p>
+            <div class="chart-container" id="chart-container">
+                <canvas id="sequestration-chart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Comparison Section -->
+        <div class="comparison-section">
+            <h2><i class="fas fa-balance-scale"></i> Ecosystem Comparison</h2>
+            <p>Compare carbon sequestration rates across different coastal ecosystems</p>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="comparison-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h4>Mangroves</h4>
+                    <p>6-8 tCO₂e/ha/year</p>
+                </div>
+                
+                <div class="comparison-item">
+                    <div class="comparison-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h4>Seagrass Meadows</h4>
+                    <p>4-6 tCO₂e/ha/year</p>
+                </div>
+                
+                <div class="comparison-item">
+                    <div class="comparison-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h4>Salt Marshes</h4>
+                    <p>3-5 tCO₂e/ha/year</p>
+                </div>
+                
+                <div class="comparison-item">
+                    <div class="comparison-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h4>Terrestrial Forests</h4>
+                    <p>2-4 tCO₂e/ha/year</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Section -->
         <div class="info-section">
             <div class="info-card">
                 <h3><i class="fas fa-info-circle"></i> About Blue Carbon</h3>
@@ -116,7 +604,7 @@
                         </div>
                         <div class="ecosystem-details">
                             <h4>Mangroves</h4>
-                            <p>Average sequestration: 6-8 tCO₂e/ha/year</p>
+                            <p>Average sequestration: 6-8 tCO₂e/ha/year. Also provide coastal protection and habitat for marine life.</p>
                         </div>
                     </div>
                     
@@ -126,7 +614,7 @@
                         </div>
                         <div class="ecosystem-details">
                             <h4>Seagrass Meadows</h4>
-                            <p>Average sequestration: 4-6 tCO₂e/ha/year</p>
+                            <p>Average sequestration: 4-6 tCO₂e/ha/year. Important for water quality and sediment stabilization.</p>
                         </div>
                     </div>
                     
@@ -136,7 +624,7 @@
                         </div>
                         <div class="ecosystem-details">
                             <h4>Salt Marshes</h4>
-                            <p>Average sequestration: 3-5 tCO₂e/ha/year</p>
+                            <p>Average sequestration: 3-5 tCO₂e/ha/year. Act as natural water filters and flood barriers.</p>
                         </div>
                     </div>
                 </div>
@@ -146,21 +634,29 @@
                 <h3><i class="fas fa-database"></i> Calculation Methodology</h3>
                 <p>Our calculator uses IPCC-approved methodologies and region-specific data to estimate carbon sequestration potential.</p>
                 <p>Factors considered:</p>
-                <ul style="margin-left: 20px; margin-top: 10px; color: #b0bec5;">
+                <ul>
                     <li>Ecosystem type and health</li>
                     <li>Geographic location and climate</li>
                     <li>Previous land use</li>
                     <li>Project duration and management practices</li>
                 </ul>
                 <p style="margin-top: 15px;">These estimates are for planning purposes. Actual credits are issued after verification through our blockchain-based MRV system.</p>
+                
+                <div class="mt-4">
+                    <h4>Verification Process</h4>
+                    <p>All projects undergo rigorous verification through:</p>
+                    <ul>
+                        <li>Satellite monitoring</li>
+                        <li>Field measurements</li>
+                        <li>Third-party audits</li>
+                        <li>Blockchain-based tracking</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        
-        <footer>
-            <p>Blockchain-Based Carbon Registry and MRV System | Ministry of Earth Sciences (MoES)</p>
-            <p>This calculator provides estimates based on standard values. Actual carbon sequestration may vary based on specific site conditions.</p>
-        </footer>
     </div>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
@@ -210,5 +706,233 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Carbon sequestration rates (tCO2e/ha/year)
+        const sequestrationRates = {
+            mangrove: { min: 6, max: 8, default: 7 },
+            seagrass: { min: 4, max: 6, default: 5 },
+            saltmarsh: { min: 3, max: 5, default: 4 },
+            other: { min: 2, max: 4, default: 3 }
+        };
+
+        // Location multipliers
+        const locationMultipliers = {
+            east: 1.0,
+            west: 1.1,
+            islands: 1.2,
+            other: 0.9
+        };
+
+        // Previous land use multipliers
+        const landUseMultipliers = {
+            degraded: 1.0,
+            aquaculture: 1.2,
+            agriculture: 1.1,
+            barren: 1.0,
+            other: 1.0
+        };
+
+        // Chart instance
+        let sequestrationChart = null;
+
+        // Initialize the calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up event listeners
+            document.getElementById('calculate-btn').addEventListener('click', calculateCarbonCredits);
+            
+            // Calculate on input changes
+            const inputs = document.querySelectorAll('#area, #duration, #carbon-price');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateCarbonCredits);
+            });
+            
+            // Calculate on select changes
+            const selects = document.querySelectorAll('#ecosystem-type, #location, #previous-land-use');
+            selects.forEach(select => {
+                select.addEventListener('change', calculateCarbonCredits);
+            });
+            
+            // Initialize with default values
+            calculateCarbonCredits();
+        });
+
+        function calculateCarbonCredits() {
+            // Get input values
+            const ecosystemType = document.getElementById('ecosystem-type').value;
+            const area = parseFloat(document.getElementById('area').value) || 0;
+            const duration = parseInt(document.getElementById('duration').value) || 10;
+            const location = document.getElementById('location').value;
+            const previousLandUse = document.getElementById('previous-land-use').value;
+            const carbonPrice = parseInt(document.getElementById('carbon-price').value) || 1500;
+            
+            // Calculate base sequestration rate
+            const baseRate = sequestrationRates[ecosystemType].default;
+            
+            // Apply multipliers
+            const locationMultiplier = locationMultipliers[location];
+            const landUseMultiplier = landUseMultipliers[previousLandUse];
+            
+            // Calculate annual sequestration
+            const annualSequestration = baseRate * area * locationMultiplier * landUseMultiplier;
+            
+            // Calculate total sequestration
+            const totalSequestration = annualSequestration * duration;
+            
+            // Calculate credits (1 credit = 1 tCO2e)
+            const annualCredits = annualSequestration;
+            const totalCredits = totalSequestration;
+            
+            // Calculate revenue
+            const annualRevenue = annualCredits * carbonPrice;
+            const totalRevenue = totalCredits * carbonPrice;
+            
+            // Update UI
+            updateResults(annualSequestration, totalSequestration, annualCredits, totalCredits, annualRevenue, totalRevenue);
+            
+            // Update environmental impact
+            updateEnvironmentalImpact(annualSequestration);
+            
+            // Update chart
+            updateChart(annualSequestration, duration);
+        }
+
+        function updateResults(annualSequestration, totalSequestration, annualCredits, totalCredits, annualRevenue, totalRevenue) {
+            // Format numbers with commas
+            const formatNumber = (num) => num.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+            const formatCurrency = (num) => '₹' + num.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+            
+            // Update result elements with animation
+            animateValue('total-sequestration', formatNumber(totalSequestration));
+            animateValue('total-credits', formatNumber(totalCredits));
+            animateValue('annual-value', formatCurrency(totalRevenue));
+            
+            document.getElementById('annual-sequestration').textContent = formatNumber(annualSequestration) + ' tCO₂e/year';
+            document.getElementById('annual-credits').textContent = formatNumber(annualCredits) + ' credits/year';
+            document.getElementById('annual-revenue').textContent = formatCurrency(annualRevenue) + '/year';
+        }
+
+        function animateValue(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            const unit = element.querySelector('.result-unit');
+            const currentValue = parseFloat(element.textContent.replace(/,/g, '')) || 0;
+            const targetValue = parseFloat(newValue.replace(/,/g, '')) || 0;
+            
+            // Add pulse animation
+            element.classList.add('pulse-animation');
+            setTimeout(() => {
+                element.classList.remove('pulse-animation');
+            }, 500);
+            
+            // Update value
+            element.innerHTML = newValue + ' ' + unit.outerHTML;
+        }
+
+        function updateEnvironmentalImpact(annualSequestration) {
+            // Average car emits about 4.6 tCO2 per year
+            const carsEquivalent = Math.round(annualSequestration / 4.6);
+            document.getElementById('cars-equivalent').textContent = carsEquivalent;
+        }
+
+        function updateChart(annualSequestration, duration) {
+            const ctx = document.getElementById('sequestration-chart').getContext('2d');
+            
+            // Generate data for each year
+            const years = Array.from({length: duration}, (_, i) => `Year ${i + 1}`);
+            const cumulativeData = Array.from({length: duration}, (_, i) => annualSequestration * (i + 1));
+            const annualData = Array(duration).fill(annualSequestration);
+            
+            // Destroy previous chart if it exists
+            if (sequestrationChart) {
+                sequestrationChart.destroy();
+            }
+            
+            // Create new chart
+            sequestrationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Annual Sequestration',
+                            data: annualData,
+                            backgroundColor: 'rgba(0, 212, 255, 0.7)',
+                            borderColor: 'rgba(0, 212, 255, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Cumulative Sequestration',
+                            data: cumulativeData,
+                            type: 'line',
+                            borderColor: 'rgba(0, 255, 136, 1)',
+                            backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Annual Sequestration (tCO₂e)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Cumulative Sequestration (tCO₂e)'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 30, 30, 0.9)',
+                            titleColor: 'rgba(255, 255, 255, 0.9)',
+                            bodyColor: 'rgba(255, 255, 255, 0.7)',
+                            borderColor: 'rgba(0, 212, 255, 0.5)',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
