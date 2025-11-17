@@ -125,13 +125,13 @@
                 <!-- Quick Stats -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="card stat-card bg-primary text-white">
+                        <div class="card stat-card bg-primary text-white" data-stat="totalArea">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>45 Ha</h4>
+                                        <h4>Loading...</h4>
                                         <p>Total Area</p>
-                                        <small class="opacity-75">+5 Ha this month</small>
+                                        <small class="opacity-75">Loading...</small>
                                     </div>
                                     <i class="fas fa-map-marked fa-2x opacity-50"></i>
                                 </div>
@@ -139,13 +139,13 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card stat-card bg-success text-white">
+                        <div class="card stat-card bg-success text-white" data-stat="creditsGenerated">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>1,250</h4>
+                                        <h4>Loading...</h4>
                                         <p>Credits Generated</p>
-                                        <small class="opacity-75">+150 this quarter</small>
+                                        <small class="opacity-75">Loading...</small>
                                     </div>
                                     <i class="fas fa-seedling fa-2x opacity-50"></i>
                                 </div>
@@ -153,13 +153,13 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card stat-card bg-warning text-white">
+                        <div class="card stat-card bg-warning text-white" data-stat="revenueEarned">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>₹6.25L</h4>
+                                        <h4>Loading...</h4>
                                         <p>Revenue Earned</p>
-                                        <small class="opacity-75">₹1.25L pending</small>
+                                        <small class="opacity-75">Loading...</small>
                                     </div>
                                     <i class="fas fa-rupee-sign fa-2x opacity-50"></i>
                                 </div>
@@ -167,13 +167,13 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card stat-card bg-info text-white">
+                        <div class="card stat-card bg-info text-white" data-stat="activeProjects">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>3</h4>
+                                        <h4>Loading...</h4>
                                         <p>Active Projects</p>
-                                        <small class="opacity-75">1 needs attention</small>
+                                        <small class="opacity-75">Loading...</small>
                                     </div>
                                     <i class="fas fa-tasks fa-2x opacity-50"></i>
                                 </div>
@@ -247,7 +247,13 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="text-center py-4" id="projects-loading">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading projects...</span>
+                                    </div>
+                                    <p class="mt-2 text-secondary">Loading your projects...</p>
+                                </div>
+                                <div class="table-responsive" id="projects-table" style="display: none;">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -260,69 +266,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <strong>Mangrove Restoration Phase 1</strong>
-                                                    <br><small class="text-secondary">Sundarbans Block A</small>
-                                                </td>
-                                                <td>15 Ha</td>
-                                                <td><span class="badge bg-success">Verified</span></td>
-                                                <td>500 tCO2e</td>
-                                                <td>
-                                                    <div class="progress" style="height: 6px;">
-                                                        <div class="progress-bar bg-success" style="width: 85%"></div>
-                                                    </div>
-                                                    <small>85% complete</small>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <button class="btn btn-outline-primary">View</button>
-                                                        <button class="btn btn-outline-success">Upload</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>Coastal Afforestation</strong>
-                                                    <br><small class="text-secondary">Sundarbans Block B</small>
-                                                </td>
-                                                <td>20 Ha</td>
-                                                <td><span class="badge bg-warning">Under Verification</span></td>
-                                                <td>750 tCO2e</td>
-                                                <td>
-                                                    <div class="progress" style="height: 6px;">
-                                                        <div class="progress-bar bg-warning" style="width: 60%"></div>
-                                                    </div>
-                                                    <small>60% complete</small>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <button class="btn btn-outline-primary">View</button>
-                                                        <button class="btn btn-outline-info">Status</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>Seagrass Rehabilitation</strong>
-                                                    <br><small class="text-secondary">Coastal Zone C</small>
-                                                </td>
-                                                <td>10 Ha</td>
-                                                <td><span class="badge bg-secondary">Planning</span></td>
-                                                <td>-</td>
-                                                <td>
-                                                    <div class="progress" style="height: 6px;">
-                                                        <div class="progress-bar bg-secondary" style="width: 20%"></div>
-                                                    </div>
-                                                    <small>20% complete</small>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <button class="btn btn-outline-primary">Setup</button>
-                                                        <button class="btn btn-outline-danger">Delete</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <!-- Projects will be loaded dynamically -->
                                         </tbody>
                                     </table>
                                 </div>

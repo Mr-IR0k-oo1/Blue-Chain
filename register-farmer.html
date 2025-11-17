@@ -639,12 +639,10 @@
         });
 
         // Form submission
-        document.getElementById('farmerRegistrationForm').addEventListener('submit', function(e) {
+        document.getElementById('farmerRegistrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (validateStep(4)) {
-                // Simulate registration success
-                alert('Registration submitted successfully! You will receive verification status within 48 hours.');
-                window.location.href = 'login.html';
+                await handleFarmerRegistration(this);
             }
         });
 

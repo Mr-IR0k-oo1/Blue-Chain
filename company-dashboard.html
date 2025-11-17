@@ -98,13 +98,13 @@
         <!-- Quick Stats & ESG Score -->
         <div class="row mb-5">
             <div class="col-md-3">
-                <div class="card stat-card text-white bg-primary">
+                <div class="card stat-card text-white bg-primary" data-stat="totalCredits">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h3>5,000</h3>
+                                <h3>Loading...</h3>
                                 <p>Total Credits</p>
-                                <small class="opacity-75">+500 this quarter</small>
+                                <small class="opacity-75">Loading...</small>
                             </div>
                             <i class="fas fa-shopping-cart fa-2x opacity-50"></i>
                         </div>
@@ -112,13 +112,13 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card text-white bg-success">
+                <div class="card stat-card text-white bg-success" data-stat="creditsRetired">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h3>3,750</h3>
+                                <h3>Loading...</h3>
                                 <p>Credits Retired</p>
-                                <small class="opacity-75">75% utilization</small>
+                                <small class="opacity-75">Loading...</small>
                             </div>
                             <i class="fas fa-check-circle fa-2x opacity-50"></i>
                         </div>
@@ -126,13 +126,13 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card text-white bg-info">
+                <div class="card stat-card text-white bg-info" data-stat="availableBalance">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h3>1,250</h3>
+                                <h3>Loading...</h3>
                                 <p>Available Balance</p>
-                                <small class="opacity-75">₹6,25,000 value</small>
+                                <small class="opacity-75">Loading...</small>
                             </div>
                             <i class="fas fa-wallet fa-2x opacity-50"></i>
                         </div>
@@ -140,14 +140,14 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card text-white bg-warning">
+                <div class="card stat-card text-white bg-warning" data-stat="esgRating">
                     <div class="card-body text-center">
-                        <div class="esg-score">AA</div>
+                        <div class="esg-score">Loading...</div>
                         <p>ESG Rating</p>
                         <div class="progress carbon-progress bg-dark">
-                            <div class="progress-bar bg-dark" style="width: 85%"></div>
+                            <div class="progress-bar bg-dark" style="width: 0%"></div>
                         </div>
-                        <small class="opacity-75">+2 points this quarter</small>
+                        <small class="opacity-75">Loading...</small>
                     </div>
                 </div>
             </div>
@@ -286,78 +286,14 @@
                                 </div>
 
                                 <!-- Project Cards -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card project-card border-success h-100">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                                    <h5 class="card-title">Mangrove Restoration Phase 1</h5>
-                                                    <span class="badge bg-success">Verified</span>
-                                                </div>
-                                                <p class="card-text text-secondary">
-                                                    <i class="fas fa-map-marker-alt me-1"></i>Sundarbans, West Bengal
-                                                </p>
-                                                <div class="mb-2">
-                                                    <span class="impact-badge badge bg-primary">Biodiversity</span>
-                                                    <span class="impact-badge badge bg-info">Women-led</span>
-                                                    <span class="impact-badge badge bg-success">Livelihood</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <div>
-                                                        <strong class="text-success">500 tCO2e</strong><br>
-                                                        <small>Available</small>
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <strong>₹500/credit</strong><br>
-                                                        <small>Total: ₹2,50,000</small>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid gap-2">
-                                                    <button class="btn btn-outline-success btn-sm" onclick="viewProjectDetails(1)">
-                                                        <i class="fas fa-eye me-1"></i>View Details
-                                                    </button>
-                                                    <button class="btn btn-success btn-sm" onclick="makeOffer(1)">
-                                                        <i class="fas fa-shopping-cart me-1"></i>Make Offer
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="text-center py-4" id="marketplace-loading">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading marketplace...</span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="card project-card border-warning h-100">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                                    <h5 class="card-title">Coastal Afforestation Project</h5>
-                                                    <span class="badge bg-warning">Under Verification</span>
-                                                </div>
-                                                <p class="card-text text-secondary">
-                                                    <i class="fas fa-map-marker-alt me-1"></i>Andaman Islands
-                                                </p>
-                                                <div class="mb-2">
-                                                    <span class="impact-badge badge bg-primary">Biodiversity</span>
-                                                    <span class="impact-badge badge bg-success">Livelihood</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <div>
-                                                        <strong class="text-warning">750 tCO2e</strong><br>
-                                                        <small>Estimated</small>
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <strong>₹475/credit</strong><br>
-                                                        <small>Total: ₹3,56,250</small>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid gap-2">
-                                                    <button class="btn btn-outline-warning btn-sm" onclick="viewProjectDetails(2)">
-                                                        <i class="fas fa-eye me-1"></i>View Details
-                                                    </button>
-                                                    <button class="btn btn-warning btn-sm" onclick="expressInterest(2)">
-                                                        <i class="fas fa-star me-1"></i>Express Interest
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p class="mt-2 text-secondary">Loading available projects...</p>
+                                </div>
+                                <div class="row" id="marketplace-projects" style="display: none;">
+                                    <!-- Projects will be loaded dynamically -->
                                 </div>
                             </div>
 
@@ -457,7 +393,13 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="text-center py-4" id="transactions-loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading transactions...</span>
+                            </div>
+                            <p class="mt-2 text-secondary">Loading transaction history...</p>
+                        </div>
+                        <div class="table-responsive" id="transactions-table" style="display: none;">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -471,41 +413,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>15 Jun 2024</td>
-                                        <td>Mangrove Restoration Phase 1</td>
-                                        <td><span class="badge bg-primary">Purchase</span></td>
-                                        <td>250 tCO2e</td>
-                                        <td>₹1,25,000</td>
-                                        <td><span class="badge bg-success">Completed</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary">Certificate</button>
-                                            <button class="btn btn-sm btn-outline-info">Invoice</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>10 Jun 2024</td>
-                                        <td>Coastal Afforestation</td>
-                                        <td><span class="badge bg-success">Retirement</span></td>
-                                        <td>200 tCO2e</td>
-                                        <td>₹1,05,000</td>
-                                        <td><span class="badge bg-success">Completed</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary">Certificate</button>
-                                            <button class="btn btn-sm btn-outline-info">Report</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>05 Jun 2024</td>
-                                        <td>Seagrass Rehabilitation</td>
-                                        <td><span class="badge bg-primary">Purchase</span></td>
-                                        <td>300 tCO2e</td>
-                                        <td>₹1,50,000</td>
-                                        <td><span class="badge bg-warning">Processing</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary">Track</button>
-                                        </td>
-                                    </tr>
+                                    <!-- Transactions will be loaded dynamically -->
                                 </tbody>
                             </table>
                         </div>

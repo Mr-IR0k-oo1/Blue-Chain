@@ -1,0 +1,1668 @@
+// Verify MRV Report
+app.patch('/api/mrv-reports/:reportId/verify', authenticateToken, authorizeRole([
+  USER_ROLES.VERIFIER,
+  USER_ROLES.ADMIN
+]), async (req, res) => {
+  try {
+    const { reportId } = req.params;
+    const { approved, verificationNotes } = req.body;
+
+    const report = mrvReports.find(r => r.id === parseInt(reportId));
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: 'MRV report not found'
+      });
+    }
+
+    if (report.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Report already verified'
+      });
+    }
+
+    // Update report
+    report.isVerified = true;
+    report.approved = approved;
+    report.verifier = req.user.id;
+    report.verifierWallet = req.user.walletAddress;
+    report.verifiedAt = new Date().toISOString();
+    report.verificationNotes = verificationNotes;
+    report.status = approved ? 'verified' : 'rejected';
+
+    // Add to verification history
+    report.verificationHistory.push({
+      verifier: req.user.id,
+      approved,
+      notes: verificationNotes,
+      timestamp: new Date().toISOString()
+    });
+
+    // Update project status and carbon amount if approved
+    const project = projects.find(p => p.id === report.projectId);
+    if (project && approved) {
+      project.carbonAmount += report.measuredCarbon;
+      project.status = PROJECT_STATUS.VERIFIED;
+      project.verificationHistory.push({
+        reportId: report.id,
+        verifier: req.user.id,
+        approved,
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Log activity
+    logActivity(req.user.id, 'MRV_REPORT_VERIFIED', {
+      reportId: report.id,
+      projectId: report.projectId,
+      approved
+    });
+
+    // Create notifications
+    const projectOwner = users.find(u => u.id === project.projectOwner);
+    if (projectOwner) {
+      createNotification(
+        projectOwner.id,
+        approved ? 'success' : 'warning',
+        `MRV Report ${approved ? 'Verified' : 'Rejected'}`,
+        `Your MRV report for "${project.projectName}" has been ${approved ? 'verified and approved' : 'rejected'}. ${verificationNotes || ''}`
+      );
+    }
+
+    res.json({
+      success: true,
+      message: `MRV report ${approved ? 'verified and approved' : 'rejected'}`,
+      data: {
+        reportId: report.id,
+        approved,
+        status: report.status
+      }
+    });
+
+  } catch (error) {
+    console.error('Error verifying MRV report:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to verify MRV report',
+      error: error.message
+    });
+  }
+});
+
+// Get projects with enhanced filtering and pagination
+app.get('/api/projects', authenticateToken, async (req, res) => {
+  try {
+    const { 
+      status, 
+      ecosystemType, 
+      owner, 
+      page = 1, 
+      limit = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = req.query;
+
+    let filteredProjects = [...projects];
+
+    // Apply filters
+    if (status) {
+      filteredProjects = filteredProjects.filter(p => p.status === status);
+    }
+
+    if (ecosystemType) {
+      filteredProjects = filteredProjects.filter(p => p.ecosystemType === ecosystemType);
+    }
+
+    if (owner) {
+      filteredProjects = filteredProjects.filter(p => p.projectOwner === parseInt(owner));
+    }
+
+    // Role-based filtering
+    if (req.user.role === USER_ROLES.PROJECT_OWNER) {
+      filteredProjects = filteredProjects.filter(p => p.projectOwner === req.user.id);
+    }
+
+    // Sort
+    filteredProjects.sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      
+      if (sortOrder === 'asc') {
+        return aVal > bVal ? 1 : -1;
+      } else {
+        return aVal < bVal ? 1 : -1;
+      }
+    });
+
+    // Paginate
+    const startIndex = (parseInt(page) - 1) * parseInt(limit);
+    const endIndex = startIndex + parseInt(limit);
+    const paginatedProjects = filteredProjects.slice(startIndex, endIndex);
+
+    // Add owner information
+    const projectsWithOwners = paginatedProjects.map(project => {
+      const owner = users.find(u => u.id === project.projectOwner);
+      return {
+        ...project,
+        ownerInfo: owner ? {
+          username: owner.username,
+          email: owner.email,
+          walletAddress: owner.walletAddress
+        } : null
+      };
+    });
+
+    res.json({
+      success: true,
+      message: 'Projects retrieved successfully',
+      data: projectsWithOwners,
+      pagination: {
+        current: parseInt(page),
+        limit: parseInt(limit),
+        total: filteredProjects.length,
+        pages: Math.ceil(filteredProjects.length / parseInt(limit))
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch projects',
+      error: error.message
+    });
+  }
+});
+
+// Get pending projects (for admin dashboard)
+app.get('/api/projects/pending', authenticateToken, authorizeRole([
+  USER_ROLES.ADMIN,
+  USER_ROLES.REGISTRY_ADMIN,
+  USER_ROLES.VERIFIER
+]), (req, res) => {
+  try {
+    const pendingStatuses = [
+      PROJECT_STATUS.REGISTERED,
+      PROJECT_STATUS.UNDER_REVIEW,
+      PROJECT_STATUS.VERIFIED
+    ];
+
+    const pendingProjects = projects.filter(p => pendingStatuses.includes(p.status));
+    
+    // Add additional information
+    const enrichedProjects = pendingProjects.map(project => {
+      const owner = users.find(u => u.id === project.projectOwner);
+      const relatedReports = mrvReports.filter(r => r.projectId === project.id);
+      
+      return {
+        ...project,
+        ownerInfo: owner ? {
+          username: owner.username,
+          email: owner.email,
+          walletAddress: owner.walletAddress
+        } : null,
+        mrvReportCount: relatedReports.length,
+        verifiedReports: relatedReports.filter(r => r.isVerified && r.approved).length
+      };
+    });
+
+    res.json({
+      success: true,
+      message: 'Pending projects retrieved successfully',
+      data: enrichedProjects,
+      count: enrichedProjects.length,
+    });
+
+  } catch (error) {
+    console.error('Error fetching pending projects:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch pending projects',
+      error: error.message,
+    });
+  }
+});
+
+// Approve project for credit issuance
+app.patch('/api/projects/:projectId/approve', authenticateToken, authorizeRole([
+  USER_ROLES.ADMIN,
+  USER_ROLES.REGISTRY_ADMIN
+]), async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const { approvalNotes } = req.body;
+
+    const project = projects.find(p => p.id === parseInt(projectId));
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
+    }
+
+    if (project.status !== PROJECT_STATUS.VERIFIED) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project must be verified before approval'
+      });
+    }
+
+    // Update project status
+    project.status = PROJECT_STATUS.APPROVED;
+    project.approvedBy = req.user.id;
+    project.approvedAt = new Date().toISOString();
+    project.approvalNotes = approvalNotes;
+    project.updatedAt = new Date().toISOString();
+
+    // Log activity
+    logActivity(req.user.id, 'PROJECT_APPROVED', {
+      projectId: project.id,
+      projectName: project.projectName
+    });
+
+    // Create notification for project owner
+    const owner = users.find(u => u.id === project.projectOwner);
+    if (owner) {
+      createNotification(
+        owner.id,
+        'success',
+        'Project Approved!',
+        `Congratulations! Your project "${project.projectName}" has been approved for carbon credit issuance.`
+      );
+    }
+
+    res.json({
+      success: true,
+      message: 'Project approved successfully',
+      data: {
+        id: project.id,
+        status: project.status,
+        approvedBy: req.user.username,
+        approvedAt: project.approvedAt
+      }
+    });
+
+  } catch (error) {
+    console.error('Error approving project:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to approve project',
+      error: error.message
+    });
+  }
+});
+
+// Get registry dashboard statistics
+app.get('/api/dashboard/stats', authenticateToken, async (req, res) => {
+  try {
+    // Calculate various statistics
+    const totalProjects = projects.length;
+    const totalUsers = users.filter(u => u.isActive).length;
+    const totalMRVReports = mrvReports.length;
+    const totalCarbonSequestered = projects.reduce((sum, project) => sum + (project.carbonAmount || 0), 0);
+
+    // Project statistics by status
+    const projectsByStatus = {};
+    Object.values(PROJECT_STATUS).forEach(status => {
+      projectsByStatus[status] = projects.filter(p => p.status === status).length;
+    });
+
+    // Ecosystem type distribution
+    const ecosystemDistribution = {};
+    projects.forEach(project => {
+      ecosystemDistribution[project.ecosystemType] = (ecosystemDistribution[project.ecosystemType] || 0) + 1;
+    });
+
+    // Recent activities (last 30 days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const recentProjects = projects.filter(p => new Date(p.createdAt) > thirtyDaysAgo).length;
+    const recentReports = mrvReports.filter(r => new Date(r.submittedAt) > thirtyDaysAgo).length;
+
+    // MRV Report statistics
+    const verifiedReports = mrvReports.filter(r => r.isVerified && r.approved).length;
+    const pendingReports = mrvReports.filter(r => !r.isVerified).length;
+
+    // User role distribution
+    const usersByRole = {};
+    Object.values(USER_ROLES).forEach(role => {
+      usersByRole[role] = users.filter(u => u.role === role && u.isActive).length;
+    });
+
+    // Carbon sequestration by ecosystem type
+    const carbonByEcosystem = {};
+    projects.forEach(project => {
+      if (project.carbonAmount) {
+        carbonByEcosystem[project.ecosystemType] = (carbonByEcosystem[project.ecosystemType] || 0) + project.carbonAmount;
+      }
+    });
+
+    res.json({
+      success: true,
+      message: 'Dashboard statistics retrieved successfully',
+      data: {
+        overview: {
+          totalProjects,
+          totalUsers,
+          totalMRVReports,
+          totalCarbonSequestered,
+          recentProjects,
+          recentReports
+        },
+        projects: {
+          byStatus: projectsByStatus,
+          byEcosystem: ecosystemDistribution
+        },
+        mrvReports: {
+          total: totalMRVReports,
+          verified: verifiedReports,
+          pending: pendingReports,
+          approvalRate: totalMRVReports > 0 ? ((verifiedReports / totalMRVReports) * 100).toFixed(2) : 0
+        },
+        users: {
+          total: totalUsers,
+          byRole: usersByRole
+        },
+        carbon: {
+          total: totalCarbonSequestered,
+          byEcosystem: carbonByEcosystem
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching dashboard stats:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch dashboard statistics',
+      error: error.message
+    });
+  }
+});
+
+// Get user notifications
+app.get('/api/notifications', authenticateToken, (req, res) => {
+  try {
+    const userNotifications = notifications
+      .filter(n => n.userId === req.user.id)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 50); // Limit to last 50 notifications
+
+    const unreadCount = userNotifications.filter(n => !n.read).length;
+
+    res.json({
+      success: true,
+      message: 'Notifications retrieved successfully',
+      data: userNotifications,
+      unreadCount
+    });
+
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch notifications',
+      error: error.message
+    });
+  }
+});
+
+// Mark notification as read
+app.patch('/api/notifications/:notificationId/read', authenticateToken, (req, res) => {
+  try {
+    const { notificationId } = req.params;
+    const notification = notifications.find(n => 
+      n.id === parseInt(notificationId) && n.userId === req.user.id
+    );
+
+    if (!notification) {
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      });
+    }
+
+    notification.read = true;
+
+    res.json({
+      success: true,
+      message: 'Notification marked as read'
+    });
+
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to mark notification as read',
+      error: error.message
+    });
+  }
+});
+
+// Get audit logs (admin only)
+app.get('/api/audit-logs', authenticateToken, authorizeRole([USER_ROLES.ADMIN]), (req, res) => {
+  try {
+    const { page = 1, limit = 50, userId, action } = req.query;
+
+    let filteredLogs = [...auditLogs];
+
+    if (userId) {
+      filteredLogs = filteredLogs.filter(log => log.userId === parseInt(userId));
+    }
+
+    if (action) {
+      filteredLogs = filteredLogs.filter(log => log.action === action);
+    }
+
+    // Sort by timestamp (newest first)
+    filteredLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    // Paginate
+    const startIndex = (parseInt(page) - 1) * parseInt(limit);
+    const endIndex = startIndex + parseInt(limit);
+    const paginatedLogs = filteredLogs.slice(startIndex, endIndex);
+
+    // Add user information
+    const logsWithUserInfo = paginatedLogs.map(log => {
+      const user = users.find(u => u.id === log.userId);
+      return {
+        ...log,
+        user: user ? {
+          username: user.username,
+          email: user.email,
+          role: user.role
+        } : null
+      };
+    });
+
+    res.json({
+      success: true,
+      message: 'Audit logs retrieved successfully',
+      data: logsWithUserInfo,
+      pagination: {
+        current: parseInt(page),
+        limit: parseInt(limit),
+        total: filteredLogs.length,
+        pages: Math.ceil(filteredLogs.length / parseInt(limit))
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching audit logs:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch audit logs',
+      error: error.message
+    });
+  }
+});
+
+// Update project status (for when NFT is minted)
+app.patch('/api/projects/:id/status', authenticateToken, authorizeRole([
+  USER_ROLES.ADMIN,
+  USER_ROLES.REGISTRY_ADMIN
+]), (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, transactionHash, tokenId, batchId } = req.body;
+
+    const projectIndex = projects.findIndex(p => p.id === parseInt(id));
+    
+    if (projectIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found',
+      });
+    }
+
+    const oldStatus = projects[projectIndex].status;
+
+    // Update project status
+    projects[projectIndex] = {
+      ...projects[projectIndex],
+      status,
+      transactionHash,
+      tokenId,
+      batchId,
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (status === PROJECT_STATUS.ACTIVE) {
+      projects[projectIndex].activatedAt = new Date().toISOString();
+      projects[projectIndex].activatedBy = req.user.id;
+    }
+
+    // Log activity
+    logActivity(req.user.id, 'PROJECT_STATUS_UPDATED', {
+      projectId: parseInt(id),
+      oldStatus,
+      newStatus: status,
+      transactionHash,
+      tokenId
+    });
+
+    // Create notification for project owner
+    const owner = users.find(u => u.id === projects[projectIndex].projectOwner);
+    if (owner) {
+      createNotification(
+        owner.id,
+        'success',
+        'Carbon Credits Issued!',
+        `Carbon credits have been successfully issued for your project "${projects[projectIndex].projectName}". Transaction: ${transactionHash}`
+      );
+    }
+
+    res.json({
+      success: true,
+      message: 'Project status updated successfully',
+      data: projects[projectIndex],
+    });
+
+  } catch (error) {
+    console.error('Error updating project status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update project status',
+      error: error.message,
+    });
+  }
+});
+
+// Test Pinata connection
+app.get('/api/test-pinata', async (req, res) => {
+  try {
+    const testAuth = await pinata.testAuthentication();
+    res.json({
+      success: true,
+      message: 'Pinata connection successful',
+      data: testAuth,
+    });
+  } catch (error) {
+    console.error('Pinata test failed:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Pinata connection failed',
+      error: error.message,
+    });
+  }
+});
+
+// Legacy submit project endpoint (for backward compatibility)
+app.post('/api/projects', upload.single('photo'), async (req, res) => {
+  try {
+    const { projectName, location, carbonAmount } = req.body;
+    const photo = req.file;
+
+    // Validate required fields
+    if (!projectName || !location) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project name and location are required',
+      });
+    }
+
+    let ipfsHash = null;
+    let photoUrl = null;
+
+    // Upload photo to IPFS if provided
+    if (photo) {
+      try {
+        console.log('Uploading photo to IPFS...');
+        
+        const result = await pinata.upload.file(photo, {
+          metadata: {
+            name: `${projectName}_photo_${Date.now()}`,
+            keyvalues: {
+              projectName: projectName,
+              location: location,
+              type: 'project_photo',
+            },
+          },
+        });
+
+        ipfsHash = result.IpfsHash;
+        photoUrl = `https://${process.env.PINATA_GATEWAY || 'gateway.pinata.cloud'}/ipfs/${ipfsHash}`;
+
+        console.log('Photo uploaded successfully:', ipfsHash);
+
+      } catch (ipfsError) {
+        console.error('IPFS upload error:', ipfsError);
+      }
+    }
+
+    // Create project object
+    const project = {
+      id: projectIdCounter++,
+      projectName,
+      location,
+      carbonAmount: parseFloat(carbonAmount) || 0,
+      ecosystemType: 'Other', // Default for legacy compatibility
+      area: 0,
+      photo: photo ? {
+        originalName: photo.originalname,
+        size: photo.size,
+        mimetype: photo.mimetype,
+      } : null,
+      ipfsHash,
+      photoUrl,
+      status: PROJECT_STATUS.REGISTERED,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      syncedFromMobile: true,
+      projectOwner: 1, // Default to admin for legacy
+    };
+
+    // Store project in memory
+    projects.push(project);
+
+    console.log('Legacy project created:', project.id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Project submitted successfully',
+      data: {
+        id: project.id,
+        projectName: project.projectName,
+        ipfsHash,
+        photoUrl,
+        status: PROJECT_STATUS.REGISTERED,
+      },
+    });
+
+  } catch (error) {
+    console.error('Error submitting project:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit project',
+      error: error.message,
+    });
+  }
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Server error:', error);
+  
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: 'File size too large. Maximum size is 50MB.',
+      });
+    }
+  }
+
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong',
+  });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'API endpoint not found',
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Enhanced Blue Carbon Registry API Server running on port ${PORT}`);
+  console.log(`📍 Health check: http://localhost:${PORT}`);
+  console.log(`📋 API base URL: http://localhost:${PORT}/api`);
+  console.log(`👤 Default admin credentials: admin@bluecarbonregistry.org / admin123`);
+  
+  // Test Pinata connection on startup
+  if (process.env.PINATA_JWT) {
+    pinata.testAuthentication()
+      .then(() => console.log('✅ Pinata IPFS connection verified'))
+      .catch((error) => console.log('❌ Pinata connection failed:', error.message));
+  } else {
+    console.log('⚠️  PINATA_JWT not found in environment variables');
+  }
+
+  console.log('🎯 New Features:');
+  console.log('   • User Authentication & Authorization');
+  console.log('   • Role-based Access Control');
+  console.log('   • MRV Reporting System');
+  console.log('   • Project Lifecycle Management');
+  console.log('   • Real-time Notifications');
+  console.log('   • Comprehensive Audit Logging');
+  console.log('   • Enhanced File Upload Support');
+});const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { PinataSDK } = require('@pinata/sdk');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Initialize Pinata SDK
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.PINATA_GATEWAY || 'gateway.pinata.cloud',
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/', 'application/pdf', 'text/csv', 'application/vnd.ms-excel'];
+    const isAllowed = allowedTypes.some(type => file.mimetype.startsWith(type));
+    
+    if (isAllowed) {
+      cb(null, true);
+    } else {
+      cb(new Error('File type not allowed. Only images, PDFs, CSV, and Excel files are supported.'), false);
+    }
+  },
+});
+
+// In-memory storage for prototype (replace with database in production)
+let users = [];
+let projects = [];
+let mrvReports = [];
+let auditLogs = [];
+let notifications = [];
+
+let projectIdCounter = 1;
+let mrvReportIdCounter = 1;
+let userIdCounter = 1;
+
+// User roles enum
+const USER_ROLES = {
+  ADMIN: 'admin',
+  VERIFIER: 'verifier',
+  AUDITOR: 'auditor',
+  PROJECT_OWNER: 'project_owner',
+  MRV_OPERATOR: 'mrv_operator',
+  REGISTRY_ADMIN: 'registry_admin'
+};
+
+// Project status enum
+const PROJECT_STATUS = {
+  REGISTERED: 'registered',
+  UNDER_REVIEW: 'under_review',
+  VERIFIED: 'verified',
+  APPROVED: 'approved',
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
+  REJECTED: 'rejected',
+  RETIRED: 'retired'
+};
+
+// Default admin user
+users.push({
+  id: userIdCounter++,
+  username: 'admin',
+  email: 'admin@bluecarbonregistry.org',
+  password: bcrypt.hashSync('admin123', 10), // Change in production!
+  role: USER_ROLES.ADMIN,
+  walletAddress: null,
+  isActive: true,
+  createdAt: new Date().toISOString()
+});
+
+// JWT Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Access token required' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret', (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Role-based authorization middleware
+const authorizeRole = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'Insufficient permissions for this action' 
+      });
+    }
+    next();
+  };
+};
+
+// Audit logging
+const logActivity = (userId, action, details) => {
+  auditLogs.push({
+    id: Date.now(),
+    userId,
+    action,
+    details,
+    timestamp: new Date().toISOString(),
+    ipAddress: 'localhost' // In production, get from req.ip
+  });
+};
+
+// Notification system
+const createNotification = (userId, type, title, message) => {
+  notifications.push({
+    id: Date.now(),
+    userId,
+    type, // 'info', 'success', 'warning', 'error'
+    title,
+    message,
+    read: false,
+    createdAt: new Date().toISOString()
+  });
+};const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const { PinataSDK } = require('@pinata/sdk');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Initialize Pinata SDK
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.PINATA_GATEWAY || 'gateway.pinata.cloud',
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  },
+});
+
+// In-memory storage for prototype (replace with database in production)
+let projects = [];
+let projectIdCounter = 1;
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Blue Carbon Registry API Server - Enhanced Version',
+    status: 'running',
+    version: '2.0.0',
+    features: [
+      'User Authentication & Authorization',
+      'Role-based Access Control',
+      'MRV Reporting System',
+      'Project Lifecycle Management',
+      'Audit Logging',
+      'Real-time Notifications',
+      'Multi-file Upload Support'
+    ],
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Authentication endpoints
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { username, email, password, role = USER_ROLES.PROJECT_OWNER, walletAddress } = req.body;
+    
+    // Validate input
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username, email, and password are required'
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = users.find(u => u.email === email || u.username === username);
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: 'User with this email or username already exists'
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const newUser = {
+      id: userIdCounter++,
+      username,
+      email,
+      password: hashedPassword,
+      role,
+      walletAddress,
+      isActive: true,
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+
+    // Log activity
+    logActivity(newUser.id, 'USER_REGISTERED', { role, walletAddress });
+
+    // Remove password from response
+    const { password: _, ...userResponse } = newUser;
+
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: userResponse
+    });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Registration failed',
+      error: error.message
+    });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password, walletAddress } = req.body;
+
+    // Find user
+    const user = users.find(u => u.email === email && u.isActive);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Update wallet address if provided
+    if (walletAddress) {
+      user.walletAddress = walletAddress;
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        id: user.id, 
+        username: user.username, 
+        email: user.email, 
+        role: user.role,
+        walletAddress: user.walletAddress 
+      },
+      process.env.JWT_SECRET || 'fallback_secret',
+      { expiresIn: '24h' }
+    );
+
+    // Log activity
+    logActivity(user.id, 'USER_LOGIN', { walletAddress });
+
+    // Remove password from response
+    const { password: _, ...userResponse } = user;
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        user: userResponse,
+        token
+      }
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Login failed',
+      error: error.message
+    });
+  }
+});
+
+// Enhanced project registration with ecosystem types
+app.post('/api/projects/register', authenticateToken, upload.fields([
+  { name: 'projectPhoto', maxCount: 5 },
+  { name: 'documents', maxCount: 10 }
+]), async (req, res) => {
+  try {
+    const {
+      projectName,
+      location,
+      ecosystemType,
+      area,
+      methodologyUsed,
+      carbonAmount,
+      projectDescription,
+      coordinates
+    } = req.body;
+
+    // Validate required fields
+    if (!projectName || !location || !ecosystemType || !area) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project name, location, ecosystem type, and area are required'
+      });
+    }
+
+    let ipfsHashes = [];
+    let documentHashes = [];
+
+    // Upload project photos to IPFS
+    if (req.files.projectPhoto) {
+      for (const photo of req.files.projectPhoto) {
+        try {
+          const result = await pinata.upload.file(photo, {
+            metadata: {
+              name: `${projectName}_photo_${Date.now()}`,
+              keyvalues: {
+                projectName: projectName,
+                type: 'project_photo',
+                ecosystemType: ecosystemType
+              }
+            }
+          });
+          ipfsHashes.push(result.IpfsHash);
+        } catch (ipfsError) {
+          console.error('IPFS photo upload error:', ipfsError);
+        }
+      }
+    }
+
+    // Upload documents to IPFS
+    if (req.files.documents) {
+      for (const doc of req.files.documents) {
+        try {
+          const result = await pinata.upload.file(doc, {
+            metadata: {
+              name: `${projectName}_document_${Date.now()}`,
+              keyvalues: {
+                projectName: projectName,
+                type: 'project_document',
+                originalName: doc.originalname
+              }
+            }
+          });
+          documentHashes.push({
+            hash: result.IpfsHash,
+            name: doc.originalname,
+            type: doc.mimetype
+          });
+        } catch (ipfsError) {
+          console.error('IPFS document upload error:', ipfsError);
+        }
+      }
+    }
+
+    // Create comprehensive project metadata
+    const projectMetadata = {
+      projectName,
+      location,
+      ecosystemType,
+      area: parseFloat(area),
+      methodologyUsed,
+      carbonAmount: parseFloat(carbonAmount) || 0,
+      projectDescription,
+      coordinates: coordinates ? JSON.parse(coordinates) : null,
+      photos: ipfsHashes,
+      documents: documentHashes,
+      projectOwner: req.user.id,
+      ownerWallet: req.user.walletAddress,
+      registrationDate: new Date().toISOString()
+    };
+
+    // Upload metadata to IPFS
+    let metadataHash = null;
+    try {
+      const metadataResult = await pinata.upload.json(projectMetadata, {
+        metadata: {
+          name: `${projectName}_metadata`,
+          keyvalues: {
+            projectName: projectName,
+            type: 'project_metadata',
+            ecosystemType: ecosystemType
+          }
+        }
+      });
+      metadataHash = metadataResult.IpfsHash;
+    } catch (error) {
+      console.error('Metadata upload error:', error);
+    }
+
+    // Create project object
+    const project = {
+      id: projectIdCounter++,
+      ...projectMetadata,
+      metadataHash,
+      status: PROJECT_STATUS.REGISTERED,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      verificationHistory: [],
+      mrvReports: [],
+      collaborators: [],
+      isTransferable: true,
+      validityPeriod: 10 // 10 years default
+    };
+
+    // Store project
+    projects.push(project);
+
+    // Log activity
+    logActivity(req.user.id, 'PROJECT_REGISTERED', {
+      projectId: project.id,
+      projectName,
+      ecosystemType,
+      area
+    });
+
+    // Create notification
+    createNotification(
+      req.user.id,
+      'success',
+      'Project Registered',
+      `Your project "${projectName}" has been successfully registered and is under review.`
+    );
+
+    console.log('Project registered:', project.id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Project registered successfully',
+      data: {
+        id: project.id,
+        projectName: project.projectName,
+        status: project.status,
+        metadataHash,
+        ipfsHashes,
+        documentHashes
+      }
+    });
+
+  } catch (error) {
+    console.error('Error registering project:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to register project',
+      error: error.message
+    });
+  }
+});
+
+// Submit MRV Report
+app.post('/api/projects/:projectId/mrv-report', authenticateToken, authorizeRole([
+  USER_ROLES.MRV_OPERATOR,
+  USER_ROLES.PROJECT_OWNER,
+  USER_ROLES.ADMIN
+]), upload.fields([
+  { name: 'reportDocuments', maxCount: 10 },
+  { name: 'evidencePhotos', maxCount: 20 }
+]), async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const {
+      reportingPeriodStart,
+      reportingPeriodEnd,
+      measuredCarbon,
+      methodology,
+      notes,
+      biodiversityMetrics,
+      socioEconomicMetrics
+    } = req.body;
+
+    // Find project
+    const project = projects.find(p => p.id === parseInt(projectId));
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
+    }
+
+    // Check permissions
+    if (req.user.role === USER_ROLES.PROJECT_OWNER && project.projectOwner !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'You can only submit reports for your own projects'
+      });
+    }
+
+    let documentHashes = [];
+    let photoHashes = [];
+
+    // Upload report documents
+    if (req.files.reportDocuments) {
+      for (const doc of req.files.reportDocuments) {
+        try {
+          const result = await pinata.upload.file(doc, {
+            metadata: {
+              name: `MRV_Report_${projectId}_${Date.now()}`,
+              keyvalues: {
+                projectId: projectId.toString(),
+                type: 'mrv_document',
+                reportId: mrvReportIdCounter.toString()
+              }
+            }
+          });
+          documentHashes.push({
+            hash: result.IpfsHash,
+            name: doc.originalname,
+            type: doc.mimetype
+          });
+        } catch (error) {
+          console.error('Document upload error:', error);
+        }
+      }
+    }
+
+    // Upload evidence photos
+    if (req.files.evidencePhotos) {
+      for (const photo of req.files.evidencePhotos) {
+        try {
+          const result = await pinata.upload.file(photo, {
+            metadata: {
+              name: `MRV_Evidence_${projectId}_${Date.now()}`,
+              keyvalues: {
+                projectId: projectId.toString(),
+                type: 'mrv_evidence',
+                reportId: mrvReportIdCounter.toString()
+              }
+            }
+          });
+          photoHashes.push(result.IpfsHash);
+        } catch (error) {
+          console.error('Photo upload error:', error);
+        }
+      }
+    }
+
+    // Create MRV report
+    const mrvReport = {
+      id: mrvReportIdCounter++,
+      projectId: parseInt(projectId),
+      reportingPeriodStart: new Date(reportingPeriodStart),
+      reportingPeriodEnd: new Date(reportingPeriodEnd),
+      measuredCarbon: parseFloat(measuredCarbon),
+      methodology,
+      notes,
+      biodiversityMetrics: biodiversityMetrics ? JSON.parse(biodiversityMetrics) : null,
+      socioEconomicMetrics: socioEconomicMetrics ? JSON.parse(socioEconomicMetrics) : null,
+      documents: documentHashes,
+      evidencePhotos: photoHashes,
+      reporter: req.user.id,
+      reporterWallet: req.user.walletAddress,
+      status: 'submitted',
+      isVerified: false,
+      submittedAt: new Date().toISOString(),
+      verificationHistory: []
+    };
+
+    // Upload report metadata to IPFS
+    try {
+      const metadataResult = await pinata.upload.json(mrvReport, {
+        metadata: {
+          name: `MRV_Report_Metadata_${projectId}_${mrvReport.id}`,
+          keyvalues: {
+            projectId: projectId.toString(),
+            type: 'mrv_metadata',
+            reportId: mrvReport.id.toString()
+          }
+        }
+      });
+      mrvReport.metadataHash = metadataResult.IpfsHash;
+    } catch (error) {
+      console.error('MRV metadata upload error:', error);
+    }
+
+    // Store report
+    mrvReports.push(mrvReport);
+
+    // Add report to project
+    project.mrvReports.push(mrvReport.id);
+    project.updatedAt = new Date().toISOString();
+
+    // Update project status if needed
+    if (project.status === PROJECT_STATUS.REGISTERED) {
+      project.status = PROJECT_STATUS.UNDER_REVIEW;
+    }
+
+    // Log activity
+    logActivity(req.user.id, 'MRV_REPORT_SUBMITTED', {
+      projectId: parseInt(projectId),
+      reportId: mrvReport.id,
+      measuredCarbon: parseFloat(measuredCarbon)
+    });
+
+    // Create notifications
+    createNotification(
+      req.user.id,
+      'success',
+      'MRV Report Submitted',
+      `Your MRV report for "${project.projectName}" has been submitted for verification.`
+    );
+
+    // Notify verifiers
+    const verifiers = users.filter(u => u.role === USER_ROLES.VERIFIER && u.isActive);
+    verifiers.forEach(verifier => {
+      createNotification(
+        verifier.id,
+        'info',
+        'New MRV Report for Verification',
+        `A new MRV report has been submitted for project "${project.projectName}" and requires verification.`
+      );
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'MRV report submitted successfully',
+      data: {
+        reportId: mrvReport.id,
+        projectId: parseInt(projectId),
+        status: 'submitted',
+        metadataHash: mrvReport.metadataHash
+      }
+    });
+
+  } catch (error) {
+    console.error('Error submitting MRV report:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit MRV report',
+      error: error.message
+    });
+  }
+});
+
+// Test Pinata connection
+app.get('/api/test-pinata', async (req, res) => {
+  try {
+    const testAuth = await pinata.testAuthentication();
+    res.json({
+      success: true,
+      message: 'Pinata connection successful',
+      data: testAuth,
+    });
+  } catch (error) {
+    console.error('Pinata test failed:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Pinata connection failed',
+      error: error.message,
+    });
+  }
+});
+
+// Submit project endpoint
+app.post('/api/projects', upload.single('photo'), async (req, res) => {
+  try {
+    const { projectName, location, carbonAmount } = req.body;
+    const photo = req.file;
+
+    // Validate required fields
+    if (!projectName || !location) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project name and location are required',
+      });
+    }
+
+    let ipfsHash = null;
+    let photoUrl = null;
+
+    // Upload photo to IPFS if provided
+    if (photo) {
+      try {
+        console.log('Uploading photo to IPFS...');
+        
+        // Create metadata for the file
+        const metadata = {
+          name: `${projectName}_photo_${Date.now()}`,
+          description: `Photo for Blue Carbon project: ${projectName}`,
+          projectName,
+          location,
+          carbonAmount: carbonAmount || 0,
+          timestamp: new Date().toISOString(),
+        };
+
+        // Upload file to Pinata
+        const result = await pinata.upload.file(photo, {
+          metadata: {
+            name: metadata.name,
+            keyvalues: {
+              projectName: projectName,
+              location: location,
+              type: 'project_photo',
+            },
+          },
+        });
+
+        ipfsHash = result.IpfsHash;
+        photoUrl = `https://${process.env.PINATA_GATEWAY || 'gateway.pinata.cloud'}/ipfs/${ipfsHash}`;
+
+        console.log('Photo uploaded successfully:', ipfsHash);
+
+        // Also upload metadata as JSON
+        const metadataResult = await pinata.upload.json(metadata, {
+          metadata: {
+            name: `${projectName}_metadata_${Date.now()}`,
+            keyvalues: {
+              projectName: projectName,
+              type: 'project_metadata',
+            },
+          },
+        });
+
+        console.log('Metadata uploaded:', metadataResult.IpfsHash);
+
+      } catch (ipfsError) {
+        console.error('IPFS upload error:', ipfsError);
+        // Continue without IPFS if upload fails
+        console.log('Continuing without IPFS upload...');
+      }
+    }
+
+    // Create project object
+    const project = {
+      id: projectIdCounter++,
+      projectName,
+      location,
+      carbonAmount: parseFloat(carbonAmount) || 0,
+      photo: photo ? {
+        originalName: photo.originalname,
+        size: photo.size,
+        mimetype: photo.mimetype,
+      } : null,
+      ipfsHash,
+      photoUrl,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      syncedFromMobile: true,
+    };
+
+    // Store project in memory
+    projects.push(project);
+
+    console.log('Project created:', project.id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Project submitted successfully',
+      data: {
+        id: project.id,
+        projectName: project.projectName,
+        ipfsHash,
+        photoUrl,
+        status: 'pending',
+      },
+    });
+
+  } catch (error) {
+    console.error('Error submitting project:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit project',
+      error: error.message,
+    });
+  }
+});
+
+// Get pending projects (for admin dashboard)
+app.get('/api/projects/pending', (req, res) => {
+  try {
+    const pendingProjects = projects.filter(p => p.status === 'pending');
+    
+    res.json({
+      success: true,
+      message: 'Pending projects retrieved successfully',
+      data: pendingProjects,
+      count: pendingProjects.length,
+    });
+
+  } catch (error) {
+    console.error('Error fetching pending projects:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch pending projects',
+      error: error.message,
+    });
+  }
+});
+
+// Get all projects
+app.get('/api/projects', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      message: 'Projects retrieved successfully',
+      data: projects,
+      count: projects.length,
+    });
+
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch projects',
+      error: error.message,
+    });
+  }
+});
+
+// Update project status (for when NFT is minted)
+app.patch('/api/projects/:id/status', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, transactionHash, tokenId } = req.body;
+
+    const projectIndex = projects.findIndex(p => p.id === parseInt(id));
+    
+    if (projectIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found',
+      });
+    }
+
+    // Update project status
+    projects[projectIndex] = {
+      ...projects[projectIndex],
+      status,
+      transactionHash,
+      tokenId,
+      approvedAt: new Date().toISOString(),
+    };
+
+    res.json({
+      success: true,
+      message: 'Project status updated successfully',
+      data: projects[projectIndex],
+    });
+
+  } catch (error) {
+    console.error('Error updating project status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update project status',
+      error: error.message,
+    });
+  }
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Server error:', error);
+  
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: 'File size too large. Maximum size is 10MB.',
+      });
+    }
+  }
+
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong',
+  });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'API endpoint not found',
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Blue Carbon Registry API Server running on port ${PORT}`);
+  console.log(`📍 Health check: http://localhost:${PORT}`);
+  console.log(`📋 API base URL: http://localhost:${PORT}/api`);
+  
+  // Test Pinata connection on startup
+  if (process.env.PINATA_JWT) {
+    pinata.testAuthentication()
+      .then(() => console.log('✅ Pinata IPFS connection verified'))
+      .catch((error) => console.log('❌ Pinata connection failed:', error.message));
+  } else {
+    console.log('⚠️  PINATA_JWT not found in environment variables');
+  }
+});
